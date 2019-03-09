@@ -4,37 +4,26 @@
 `define p3_done 3'b100
 
 module chords(
-		input clk,
-		input reset,
-		input new_note,
-		input song_done,
-      input [5:0] note_to_load, 
-		input [5:0] duration,
-		input new_note,
-		input play_enable,
+		
+		input clk, // input for ff
+		input reset, // input for ff 
+		input new_note, // from song reader
+      input [5:0] note_to_load, // from song reader, from song reader
+		input [5:0] duration_to_load, // from song reader
+		input play_enable, // from song reader
 		input beat,
 		input generate_next_sample,
-		output player_available,
-		output [15:0] sample_out_player1,
-		output new_sample_ready_player1,
-		output [15:0] sample_out_player2,
-		output new_sample_ready_player2,
-		output [15:0] sample_out_player3,
-		output new_sample_ready_player3
+		output player_available, // output for chords
+		output [45:0] sample_out_player, // concatenated samples out
+		output new_sample_ready_player // from the not player, won't be used? QUESTION
     );
 	 
-	 wire player1_done;
-	 wire player2_done;
-	 wire player3_done;
-	 
-	 // mux select
-	 wire [3:0] select = {player3_done, player2_done, player1_done};
-
-// clock stuff
-	reg [2:0] load_d;
-	wire [2:0] load_q;
+	 wire player1_done, player2_done, player3_done;
+	 wire [3:0] select;
+	 reg [2:0] load_d, load_q;
+	 wire [15:0] sample_out_player1, sample_out_player2, sample_out_player3;
+	 wire new_sample_ready_player1, new_sample_ready_player2, new_sample_ready_player3;
 	
-// wire sample done and out
 	 
 	 // TO DO -- note player instantiations
 
@@ -107,7 +96,9 @@ always @(*) begin
 	endcase
 
 end
-
+// mux select
+assign select = {player3_done, player2_done, player1_done};
 assign player_available = (player3_done|player2_done|player1_done);
+assign sample_out = {sample_out_player1, sample_out_player2, sample_out_player3};
 
 endmodule
