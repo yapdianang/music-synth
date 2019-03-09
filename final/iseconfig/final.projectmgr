@@ -26,6 +26,7 @@
          <ClosedNode>/zedboard_hdmi - Behavioral Z:|groups|12|final|zedboard_hdmi.vhd</ClosedNode>
       </ClosedNodes>
       <SelectedItems>
+<<<<<<< HEAD
          <SelectedItem>note_player - note_player (C:/Users/makenal/Documents/music-synth/final/note_player.v)</SelectedItem>
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
@@ -33,6 +34,25 @@
       <ViewHeaderState orientation="horizontal" >000000ff000000000000000100000001000000000000000000000000000000000202000000010000000100000064000001b0000000020000000000000000000000000200000064ffffffff000000810000000300000002000001b00000000100000003000000000000000100000003</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >true</UserChangedColumnWidths>
       <CurrentItem>note_player - note_player (C:/Users/makenal/Documents/music-synth/final/note_player.v)</CurrentItem>
+=======
+<<<<<<< HEAD
+         <SelectedItem>sr - sine_reader (C:/Users/ad9697/Documents/music-synth/final/sine_reader.v)</SelectedItem>
+      </SelectedItems>
+      <ScrollbarPosition orientation="vertical" >45</ScrollbarPosition>
+=======
+         <SelectedItem>song_reader - song_reader (C:/Users/makenal/Documents/music-synth/final/song_reader.v)</SelectedItem>
+      </SelectedItems>
+      <ScrollbarPosition orientation="vertical" >12</ScrollbarPosition>
+>>>>>>> f9f55e6cd27793128ee821b0adb9aafc245e4c19
+      <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
+      <ViewHeaderState orientation="horizontal" >000000ff000000000000000100000001000000000000000000000000000000000202000000010000000100000064000001b0000000020000000000000000000000000200000064ffffffff000000810000000300000002000001b00000000100000003000000000000000100000003</ViewHeaderState>
+      <UserChangedColumnWidths orientation="horizontal" >true</UserChangedColumnWidths>
+<<<<<<< HEAD
+      <CurrentItem>sr - sine_reader (C:/Users/ad9697/Documents/music-synth/final/sine_reader.v)</CurrentItem>
+=======
+      <CurrentItem>song_reader - song_reader (C:/Users/makenal/Documents/music-synth/final/song_reader.v)</CurrentItem>
+>>>>>>> f9f55e6cd27793128ee821b0adb9aafc245e4c19
+>>>>>>> 37205121349d3828456e8eeeef7362df618ef217
    </ItemView>
    <ItemView engineview="SynthesisOnly" sourcetype="" guiview="Process" >
       <ClosedNodes>
