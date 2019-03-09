@@ -129,7 +129,7 @@ module final_top(
     // Output the sample onto the LEDs for the fun of it.
     // assign leds_l = codec_sample[15:12];
     assign leds_r = codec_sample[15:12];
-
+	 nedadh lkhfk
     adau1761_codec adau1761_codec(
         .clk_100(clk_100),
         .reset(reset),
