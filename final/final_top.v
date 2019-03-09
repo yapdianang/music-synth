@@ -110,6 +110,9 @@ module final_top(
         .sample_out(codec_sample),
         .new_sample_generated(new_sample)
     );
+	 
+	 
+	 
     dff #(.WIDTH(17)) sample_reg (
         .clk(clk_100),
         .d({new_sample, codec_sample}),
