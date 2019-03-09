@@ -15,12 +15,11 @@ module chords(
 		input generate_next_sample,
 		output player_available, // output for chords
 		output [45:0] sample_out_player, // concatenated samples out
-		output new_sample_ready_player // from the not player, won't be used? QUESTION
+		output [2:0] new_sample_ready_player // from the not player, won't be used? QUESTION
     );
 	 
 	 wire player1_done, player2_done, player3_done;
-	 wire [3:0] select;
-	 reg [2:0] load_d, load_q;
+	 reg [2:0] select, load_d, load_q;
 	 wire [15:0] sample_out_player1, sample_out_player2, sample_out_player3;
 	 wire new_sample_ready_player1, new_sample_ready_player2, new_sample_ready_player3;
 	
@@ -96,9 +95,10 @@ always @(*) begin
 	endcase
 
 end
-// mux select
+// mux selectg
 assign select = {player3_done, player2_done, player1_done};
 assign player_available = (player3_done|player2_done|player1_done);
 assign sample_out = {sample_out_player1, sample_out_player2, sample_out_player3};
+assign new_sample_ready_player = {new_sample_ready_player1, new_sample_ready_player2, new_sample_ready_player3};
 
 endmodule
