@@ -1,0 +1,35 @@
+Running: C:\Xilinx\14.7\ISE_DS\ISE\bin\nt\unwrapped\fuse.exe -intstyle ise -incremental -lib unisims_ver -lib unimacro_ver -lib xilinxcorelib_ver -lib secureip -o Z:/groups/12/lab5/wave_capture_tb_isim_beh.exe -prj Z:/groups/12/lab5/wave_capture_tb_beh.prj work.wave_capture_tb work.glbl 
+ISim P.20131013 (signature 0x8ef4fb42)
+Number of CPUs detected in this system: 2
+Turning on mult-threading, number of parallel sub-compilation jobs: 4 
+Determining compilation order of HDL files
+Analyzing Verilog file "Z:/groups/12/lab5/sine_rom.v" into library work
+Analyzing Verilog file "Z:/groups/12/lab5/ff_lib.v" into library work
+Analyzing Verilog file "Z:/groups/12/lab5/wave_capture.v" into library work
+WARNING:HDLCompiler:35 - "Z:/groups/12/lab5/wave_capture.v" Line 45: <next_count> is already implicitly declared earlier.
+WARNING:HDLCompiler:35 - "Z:/groups/12/lab5/wave_capture.v" Line 47: <next_state> is already implicitly declared earlier.
+WARNING:HDLCompiler:35 - "Z:/groups/12/lab5/wave_capture.v" Line 48: <state> is already implicitly declared earlier.
+WARNING:HDLCompiler:35 - "Z:/groups/12/lab5/wave_capture.v" Line 49: <prev_sample> is already implicitly declared earlier.
+Analyzing Verilog file "Z:/groups/12/lab5/sine_reader.v" into library work
+Analyzing Verilog file "Z:/groups/12/lab5/wave_capture_tb.v" into library work
+Analyzing Verilog file "C:/Xilinx/14.7/ISE_DS/ISE//verilog/src/glbl.v" into library work
+Starting static elaboration
+WARNING:HDLCompiler:329 - "Z:/groups/12/lab5/wave_capture_tb.v" Line 33: Target <sample_ready> of concurrent assignment or output port connection should be a net type.
+Completed static elaboration
+Fuse Memory Usage: 105208 KB
+Fuse CPU Usage: 483 ms
+Compiling module dffre(WIDTH=8)
+Compiling module dffr(WIDTH=2)
+Compiling module dffr(WIDTH=16)
+Compiling module wave_capture
+Compiling module sine_rom
+Compiling module dffre(WIDTH=22)
+Compiling module sine_reader
+Compiling module wave_capture_tb
+Compiling module glbl
+Time Resolution for simulation is 1ps.
+Waiting for 6 sub-compilation(s) to finish...
+Compiled 9 Verilog Units
+Built simulation executable Z:/groups/12/lab5/wave_capture_tb_isim_beh.exe
+Fuse Memory Usage: 133864 KB
+Fuse CPU Usage: 1045 ms

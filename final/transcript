@@ -1,0 +1,530 @@
+# Reading C:/altera/13.0sp1/modelsim_ase/tcl/vsim/pref.tcl 
+# do {wave_display_tb.fdo} 
+# ** Warning: (vlib-34) Library already exists at "work".
+# 
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module sync_generators
+# 
+# Top level modules:
+# 	sync_generators
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module sine_rom
+# 
+# Top level modules:
+# 	sine_rom
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module dff
+# -- Compiling module dffr
+# -- Compiling module dffre
+# 
+# Top level modules:
+# 	dff
+# 	dffr
+# 	dffre
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module chip_data_parser
+# 
+# Top level modules:
+# 	chip_data_parser
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module wave_display
+# 
+# Top level modules:
+# 	wave_display
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module wave_capture
+# 
+# Top level modules:
+# 	wave_capture
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module sine_reader
+# 
+# Top level modules:
+# 	sine_reader
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module ram_1w2r
+# 
+# Top level modules:
+# 	ram_1w2r
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module dvi_controller_top
+# 
+# Top level modules:
+# 	dvi_controller_top
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module wave_display_tb
+# 
+# Top level modules:
+# 	wave_display_tb
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module glbl
+# 
+# Top level modules:
+# 	glbl
+# vsim -L xilinxcorelib_ver -L unisims_ver -L unimacro_ver -L secureip -lib work -voptargs=\"+acc\" -t 1ps work.wave_display_tb glbl 
+# Loading work.wave_display_tb
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# Loading work.sine_reader
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# Loading work.sine_rom
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# Loading work.dffre
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# Loading work.dffr
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# Loading work.wave_capture
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# Loading work.ram_1w2r
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# Loading work.wave_display
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# Loading work.dvi_controller_top
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# Loading work.sync_generators
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# Loading work.chip_data_parser
+# Loading work.glbl
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+# 
+#           File in use by: dianang7  Hostname: RM128-12  ProcessID: 4692
+# 
+#           Attempting to use alternate WLF file "./wlftgfg1d3".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+# 
+#           Using alternate file: ./wlftgfg1d3
+# 
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body.tree
+# DVI display: image display.ppm opened for output.
+restart -f
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'xilinxcorelib_ver' at "xilinxcorelib_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unisims_ver' at "unisims_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'unimacro_ver' at "unimacro_ver".
+# 
+# No such file or directory. (errno = ENOENT)
+# ** Error: (vsim-19) Failed to access library 'secureip' at "secureip".
+# 
+# No such file or directory. (errno = ENOENT)
+run -all
+# DVI display: image display.ppm opened for output.
+# [12845000] DVI display: started new frame.
+# Break key hit 
+# Break in Module ram_1w2r at ram_1w2r.v line 24
+# WARNING: No extended dataflow license exists
+# WARNING: No extended dataflow license exists
+# WARNING: No extended dataflow license exists

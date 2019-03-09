@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="warning" file="HDLCompiler" num="35" delta="unknown" >"Z:/groups/12/lab5/wave_capture.v" Line 45: &lt;<arg fmt="%s" index="1">next_count</arg>&gt; is already implicitly declared earlier.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="35" delta="unknown" >"Z:/groups/12/lab5/wave_capture.v" Line 47: &lt;<arg fmt="%s" index="1">next_state</arg>&gt; is already implicitly declared earlier.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="35" delta="unknown" >"Z:/groups/12/lab5/wave_capture.v" Line 48: &lt;<arg fmt="%s" index="1">state</arg>&gt; is already implicitly declared earlier.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="35" delta="unknown" >"Z:/groups/12/lab5/wave_capture.v" Line 49: &lt;<arg fmt="%s" index="1">prev_sample</arg>&gt; is already implicitly declared earlier.
+</msg>
+
+<msg type="warning" file="HDLCompiler" num="329" delta="unknown" >"Z:/groups/12/lab5/wave_capture_tb.v" Line 33: Target &lt;<arg fmt="%s" index="1">sample_ready</arg>&gt; of concurrent assignment or output port connection should be a net type.
+</msg>
+
+</messages>
+
