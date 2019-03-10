@@ -21,6 +21,11 @@
 `define RAM_WIDTH 16
 `define RAM_DEPTH 15 //RAM is capable of storing 2^15 addresses
 
+/*
+next_D and next_H go HIGH for one clk cycle when user desires to increase delay and attenuation respectively.
+Delay varies between 100 ms (4800 samples) and 500 ms (240000) samples
+Attenuation varies between x1 and x(1/8) 
+*/
 module echo(
 	input clk,
 	input reset,
@@ -39,10 +44,11 @@ wire [2:0] next_delay_state, curr_delay_state;
 wire [4:0] delay;
 wire signed [15:0] echo;
 wire [14:0] next_read_addr, curr_read_addr, next_write_addr, curr_write_addr;
+wire [1:0] curr_att_state, next_att_state;
 
 dffre #(3) delay_ff(.clk(clk), .r(reset), .en(next_D), .d(next_delay_state), .q(curr_delay_state));
 dffre #(2) att_ff(.clk(clk), .r(reset), .en(next_H), .d(next_att_state), .q(curr_att_state));
-dffr #(15) write_ff(.clk(clk), .r(reset), .d(next_write_addr), .q(curr_write_addr));
+//dffr #(15) write_ff(.clk(clk), .r(reset), .d(next_write_addr), .q(curr_write_addr));
 dffr #(15) read_ff(.clk(clk), .r(reset), .d(next_read_addr), .q(curr_read_addr));
 
 
@@ -50,8 +56,10 @@ assign next_delay_state = (curr_delay_state == 3'd4) ? 3'd0 : curr_delay_state +
 
 assign next_att_state = curr_att_state + 1;
 
-assign next_write_addr = (curr_write_addr == MAX_ADDR) ? 15'd0 : (next_D ? delay : curr_write_addr + 15'd1);
+//assign next_write_addr = (curr_write_addr == MAX_ADDR) ? 15'd0 : (next_D ? delay : curr_write_addr + 15'd1);
 assign next_read_addr = ((curr_read_addr == MAX_ADDR) | next_D) ? 15'd0 : curr_read_addr + 15'd1;
+assign curr_write_addr = (curr_read_addr + delay > MAX_ADDR) ? 
+								  curr_read_addr + delay - `DELAY5 : curr_read_addr + delay;
 
 always @(*) begin
 	case(curr_delay_state)
@@ -93,12 +101,16 @@ RAM #(RAM_WIDTH, RAM_DEPTH) ram_1w2r  (
 );
 
 shifter #(16) attenuator(
-	.in(delayed),
-	.distance(curr_att_state), 
+	.in(delayed), //width 16
+	.distance(curr_att_state), //width 2
 	.direction(1), //Shifts right, preserves sign 
-	.out(echo)
+	.out(echo) //width 16
 );
 
-assign out = sample_in + echo;
+signed_add #(16) adder (
+	.inA (sample_in),
+	.inB (echo),
+	.out(out)
+);
 
 endmodule
