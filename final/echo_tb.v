@@ -11,13 +11,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 module echo_tb();
 
-reg clk, reset, in_ready;
+reg clk, reset, in_ready, next_D, next_H;
 wire out_ready;
-
 reg [15:0] sample_in; 
 wire [15:0] sample_out; 
 
-echo echo_dut(
+echo dut_echo(
 	.clk(clk),
 	.reset(reset),
 	.sample_in(sample_in),
@@ -38,9 +37,12 @@ echo echo_dut(
  end
 
 initial begin
-	
-	
-	
+	next_D = 1'b0;
+	next_H = 1'b0;
+	in_ready = 1'b1;
+	sample_in = 16'd1;
+	forever #255 sample_in = sample_in ? 16'd0 : 16'd1;
 end
+
 	 
 endmodule

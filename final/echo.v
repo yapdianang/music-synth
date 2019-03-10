@@ -17,7 +17,7 @@
 `define DELAY3 15'd14400 
 `define DELAY4 15'd19200
 `define DELAY5 15'd24000
-`define MAX_ADDR 15'd23999
+`define MAX_ADDR 15'd32767
 `define RAM_WIDTH 16
 `define RAM_DEPTH 15 //RAM is capable of storing 2^15 addresses
 
@@ -41,15 +41,15 @@ assign out_ready = in_ready;
 
 
 wire [2:0] next_delay_state, curr_delay_state;
-wire [4:0] delay;
-wire signed [15:0] echo;
-wire [14:0] next_read_addr, curr_read_addr, next_write_addr, curr_write_addr;
+reg [14:0] delay;
+wire signed [15:0] echo, delayed;
+wire [14:0] next_read_addr, curr_read_addr, curr_write_addr;
 wire [1:0] curr_att_state, next_att_state;
 
 dffre #(3) delay_ff(.clk(clk), .r(reset), .en(next_D), .d(next_delay_state), .q(curr_delay_state));
 dffre #(2) att_ff(.clk(clk), .r(reset), .en(next_H), .d(next_att_state), .q(curr_att_state));
 //dffr #(15) write_ff(.clk(clk), .r(reset), .d(next_write_addr), .q(curr_write_addr));
-dffr #(15) read_ff(.clk(clk), .r(reset), .d(next_read_addr), .q(curr_read_addr));
+dffre #(15) read_ff(.clk(clk), .r(reset), .en(in_ready), .d(next_read_addr), .q(curr_read_addr));
 
 
 assign next_delay_state = (curr_delay_state == 3'd4) ? 3'd0 : curr_delay_state + 3'd1;
@@ -57,9 +57,9 @@ assign next_delay_state = (curr_delay_state == 3'd4) ? 3'd0 : curr_delay_state +
 assign next_att_state = curr_att_state + 1;
 
 //assign next_write_addr = (curr_write_addr == MAX_ADDR) ? 15'd0 : (next_D ? delay : curr_write_addr + 15'd1);
-assign next_read_addr = ((curr_read_addr == MAX_ADDR) | next_D) ? 15'd0 : curr_read_addr + 15'd1;
-assign curr_write_addr = (curr_read_addr + delay > MAX_ADDR) ? 
-								  curr_read_addr + delay - `DELAY5 : curr_read_addr + delay;
+assign next_read_addr = ((curr_read_addr == `MAX_ADDR) | next_D) ? 15'd0 : curr_read_addr + 15'd1;
+assign curr_write_addr = (curr_read_addr + delay > `MAX_ADDR) ? 
+								  curr_read_addr + delay - (1 + `MAX_ADDR) : curr_read_addr + delay;
 
 always @(*) begin
 	case(curr_delay_state)
@@ -89,7 +89,7 @@ RAM that stores delayed values. Write address should ALWAYS lead read_addr by `d
 read_addr and write_addr increment by 1 at each step.
 We use port A only to write, and port B to read. We don't care about value returned from addr_A.
 */
-RAM #(RAM_WIDTH, RAM_DEPTH) ram_1w2r  (
+ram_1w2r #(`RAM_WIDTH, `RAM_DEPTH) RAM  (
     .clka(clk), //Read-write port a, only used to write
     .wea(1), //Port a used to write to RAM
     .addra(curr_write_addr), 

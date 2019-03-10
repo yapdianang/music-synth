@@ -10,10 +10,10 @@
 //	Note that sign is preserved during shifting 
 //////////////////////////////////////////////////////////////////////////////////
 module shifter #(parameter WIDTH = 16)(
-	input wire [WIDTH - 1:0] in,
-	input wire [1:0] distance, 
+	input [WIDTH - 1:0] in,
+	input [1:0] distance, 
 	input wire direction, 
-	output wire [WIDTH - 1:0] out
+	output signed [WIDTH - 1:0] out
 );
 
 // Declarations
@@ -22,8 +22,8 @@ wire [WIDTH - 1:0] rot_r;
 wire [WIDTH - 1:0] rot_l;
 
 // Rotating logic
-assign rot_l = in <<< distance;
-assign rot_r = in >>> distance;
+assign rot_l = $signed(in) <<< distance;
+assign rot_r = $signed(in) >>> distance;
 
 assign out = direction ? rot_r : rot_l;
 
