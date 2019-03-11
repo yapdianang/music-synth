@@ -23,15 +23,6 @@ wave_capture dut_wc(
     .write_sample (write_sample),
     .read_index (read_index)
 );
- 
-/*
-fake_sample_ram dut_fsr(
-    .clk(clk),
-   // input [7:0] addr,
- 	 .addr(addr),
-    .dout(dout)
-);
-*/
 
 sine_reader dut_sr(
     .clk (clk),
