@@ -7,11 +7,16 @@
    <ItemView engineview="SynthesisOnly" guiview="Source" compilemode="AutoCompile" >
       <ClosedNodes>
          <ClosedNodesVersion>2</ClosedNodesVersion>
+         <ClosedNode>/Automatic `includes</ClosedNode>
          <ClosedNode>/chords C:|Users|makenal|Documents|music-synth|final|chords.v/note_player1 - note_player</ClosedNode>
          <ClosedNode>/chords C:|Users|makenal|Documents|music-synth|final|chords.v/note_player2 - note_player</ClosedNode>
          <ClosedNode>/chords C:|Users|makenal|Documents|music-synth|final|chords.v/note_player3 - note_player</ClosedNode>
+         <ClosedNode>/clamper - Behavioral C:|Users|ad9697|Documents|music-synth|final|clamper.vhd</ClosedNode>
          <ClosedNode>/clamper - Behavioral C:|Users|makenal|Documents|music-synth|final|clamper.vhd</ClosedNode>
+         <ClosedNode>/dvi_controller_top C:|Users|ad9697|Documents|music-synth|final|src|dvi_controller_top.v</ClosedNode>
          <ClosedNode>/dvi_controller_top C:|Users|makenal|Documents|music-synth|final|dvi_controller_top.v</ClosedNode>
+         <ClosedNode>/echo C:|Users|ad9697|Documents|music-synth|final|src|echo.v</ClosedNode>
+         <ClosedNode>/final_top C:|Users|ad9697|Documents|music-synth|final|src|final_top.v</ClosedNode>
          <ClosedNode>/final_top C:|Users|makenal|Documents|music-synth|final|final_top.v/adau1761_codec - adau1761_codec</ClosedNode>
          <ClosedNode>/final_top C:|Users|makenal|Documents|music-synth|final|final_top.v/hdmi - vga_hdmi - Behavioral</ClosedNode>
          <ClosedNode>/final_top C:|Users|makenal|Documents|music-synth|final|final_top.v/music_player - music_player/beat_generator - beat_generator</ClosedNode>
@@ -22,56 +27,34 @@
          <ClosedNode>/final_top C:|Users|makenal|Documents|music-synth|final|final_top.v/next_button_press_unit - button_press_unit</ClosedNode>
          <ClosedNode>/final_top C:|Users|makenal|Documents|music-synth|final|final_top.v/play_button_press_unit - button_press_unit</ClosedNode>
          <ClosedNode>/final_top C:|Users|makenal|Documents|music-synth|final|final_top.v/wd_top - wave_display_top</ClosedNode>
+         <ClosedNode>/zedboard_hdmi - Behavioral C:|Users|ad9697|Documents|music-synth|final|zedboard_hdmi.vhd</ClosedNode>
          <ClosedNode>/zedboard_hdmi - Behavioral C:|Users|makenal|Documents|music-synth|final|zedboard_hdmi.vhd</ClosedNode>
          <ClosedNode>/zedboard_hdmi - Behavioral Z:|groups|12|final|zedboard_hdmi.vhd</ClosedNode>
       </ClosedNodes>
       <SelectedItems>
-<<<<<<< HEAD
-<<<<<<< HEAD
-         <SelectedItem>note_player - note_player (C:/Users/makenal/Documents/music-synth/final/note_player.v)</SelectedItem>
-      </SelectedItems>
-      <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
-      <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
-      <ViewHeaderState orientation="horizontal" >000000ff000000000000000100000001000000000000000000000000000000000202000000010000000100000064000001b0000000020000000000000000000000000200000064ffffffff000000810000000300000002000001b00000000100000003000000000000000100000003</ViewHeaderState>
-      <UserChangedColumnWidths orientation="horizontal" >true</UserChangedColumnWidths>
-      <CurrentItem>note_player - note_player (C:/Users/makenal/Documents/music-synth/final/note_player.v)</CurrentItem>
-=======
-<<<<<<< HEAD
-         <SelectedItem>sr - sine_reader (C:/Users/ad9697/Documents/music-synth/final/sine_reader.v)</SelectedItem>
-=======
-         <SelectedItem>final_top (C:/Users/ad9697/Documents/music-synth/final/final_top.v)</SelectedItem>
->>>>>>> fdcc430a9fb13d82f710f6181066a19f3eaf5c04
+         <SelectedItem>zedboard_hdmi - Behavioral (C:/Users/ad9697/Documents/music-synth/final/zedboard_hdmi.vhd)</SelectedItem>
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
       <ViewHeaderState orientation="horizontal" >000000ff000000000000000100000001000000000000000000000000000000000202000000010000000100000064000002ec000000020000000000000000000000000200000064ffffffff000000810000000300000002000002ec0000000100000003000000000000000100000003</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >true</UserChangedColumnWidths>
-<<<<<<< HEAD
-<<<<<<< HEAD
-      <CurrentItem>sr - sine_reader (C:/Users/ad9697/Documents/music-synth/final/sine_reader.v)</CurrentItem>
-=======
-      <CurrentItem>song_reader - song_reader (C:/Users/makenal/Documents/music-synth/final/song_reader.v)</CurrentItem>
->>>>>>> f9f55e6cd27793128ee821b0adb9aafc245e4c19
->>>>>>> 37205121349d3828456e8eeeef7362df618ef217
-=======
-      <CurrentItem>final_top (C:/Users/ad9697/Documents/music-synth/final/final_top.v)</CurrentItem>
->>>>>>> fdcc430a9fb13d82f710f6181066a19f3eaf5c04
+      <CurrentItem>zedboard_hdmi - Behavioral (C:/Users/ad9697/Documents/music-synth/final/zedboard_hdmi.vhd)</CurrentItem>
    </ItemView>
-   <ItemView engineview="SynthesisOnly" sourcetype="" guiview="Process" >
+   <ItemView engineview="SynthesisOnly" sourcetype="DESUT_VERILOG" guiview="Process" >
       <ClosedNodes>
          <ClosedNodesVersion>1</ClosedNodesVersion>
-         <ClosedNode>Design Utilities</ClosedNode>
+         <ClosedNode>Configure Target Device</ClosedNode>
+         <ClosedNode>Design Utilities/Compile HDL Simulation Libraries</ClosedNode>
+         <ClosedNode>Implement Design</ClosedNode>
+         <ClosedNode>Synthesize - XST</ClosedNode>
+         <ClosedNode>User Constraints</ClosedNode>
       </ClosedNodes>
-<<<<<<< HEAD
       <SelectedItems>
          <SelectedItem/>
       </SelectedItems>
-=======
-      <SelectedItems/>
->>>>>>> fdcc430a9fb13d82f710f6181066a19f3eaf5c04
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
-      <ViewHeaderState orientation="horizontal" ></ViewHeaderState>
+      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000100000000000000000000000000000000000000000000000176000000010000000100000000000000000000000064ffffffff000000810000000000000001000001760000000100000000</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
       <CurrentItem/>
    </ItemView>
@@ -82,9 +65,9 @@
       <SelectedItems/>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
-      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000000000000010000000000000000000000000000000000000252000000040101000100000000000000000000000064ffffffff000000810000000000000004000000420000000100000000000000240000000100000000000000660000000100000000000001860000000100000000</ViewHeaderState>
+      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000000000000010000000000000000000000000000000000000252000000040101000100000000000000000000000064ffffffff000000810000000000000004000000c300000001000000000000009d00000001000000000000006600000001000000000000008c0000000100000000</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
-      <CurrentItem></CurrentItem>
+      <CurrentItem>adau1761_codec.v</CurrentItem>
    </ItemView>
    <ItemView guiview="Library" >
       <ClosedNodes>
@@ -97,6 +80,22 @@
       <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000000000000010000000000000000000000000000000000000109000000010001000100000000000000000000000064ffffffff000000810000000000000001000001090000000100000000</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
       <CurrentItem>work</CurrentItem>
+   </ItemView>
+   <SourceProcessView>000000ff00000000000000020000015f0000016001000000050100000002</SourceProcessView>
+   <CurrentView>Implementation</CurrentView>
+   <ItemView engineview="SynthesisOnly" sourcetype="" guiview="Process" >
+      <ClosedNodes>
+         <ClosedNodesVersion>1</ClosedNodesVersion>
+         <ClosedNode>Design Utilities/Compile HDL Simulation Libraries</ClosedNode>
+      </ClosedNodes>
+      <SelectedItems>
+         <SelectedItem>Design Utilities</SelectedItem>
+      </SelectedItems>
+      <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
+      <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
+      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000100000000000000000000000000000000000000000000000176000000010000000100000000000000000000000064ffffffff000000810000000000000001000001760000000100000000</ViewHeaderState>
+      <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
+      <CurrentItem>Design Utilities</CurrentItem>
    </ItemView>
    <ItemView engineview="SynthesisOnly" sourcetype="DESUT_VHDL_ARCHITECTURE" guiview="Process" >
       <ClosedNodes>
@@ -112,46 +111,40 @@
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
-      <ViewHeaderState orientation="horizontal" >000000ff000000000000000100000001000000000000000000000000000000000000000000000000f1000000010000000100000000000000000000000064ffffffff000000810000000000000001000000f10000000100000000</ViewHeaderState>
-      <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
-      <CurrentItem></CurrentItem>
-   </ItemView>
-   <ItemView engineview="SynthesisOnly" sourcetype="DESUT_VERILOG" guiview="Process" >
-      <ClosedNodes>
-         <ClosedNodesVersion>1</ClosedNodesVersion>
-         <ClosedNode>Configure Target Device</ClosedNode>
-         <ClosedNode>Design Utilities</ClosedNode>
-         <ClosedNode>Implement Design</ClosedNode>
-         <ClosedNode>Synthesize - XST</ClosedNode>
-         <ClosedNode>User Constraints</ClosedNode>
-      </ClosedNodes>
-      <SelectedItems>
-         <SelectedItem></SelectedItem>
-      </SelectedItems>
-      <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
-      <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
-<<<<<<< HEAD
-      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000100000000000000000000000000000000000000000000000173000000010000000100000000000000000000000064ffffffff000000810000000000000001000001730000000100000000</ViewHeaderState>
+      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000100000000000000000000000000000000000000000000000176000000010000000100000000000000000000000064ffffffff000000810000000000000001000001760000000100000000</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
       <CurrentItem></CurrentItem>
    </ItemView>
    <ItemView engineview="BehavioralSim" guiview="Source" compilemode="AutoCompile" >
       <ClosedNodes>
          <ClosedNodesVersion>2</ClosedNodesVersion>
-         <ClosedNode>/clamper - Behavioral C:|Users|makenal|Documents|music-synth|final|clamper.vhd</ClosedNode>
-         <ClosedNode>/final_top C:|Users|makenal|Documents|music-synth|final|final_top.v</ClosedNode>
-         <ClosedNode>/wave_capture_tb C:|Users|makenal|Documents|music-synth|final|wave_capture_tb.v</ClosedNode>
-         <ClosedNode>/wave_display_tb C:|Users|makenal|Documents|music-synth|final|wave_display_tb.v</ClosedNode>
-         <ClosedNode>/zedboard_hdmi - Behavioral C:|Users|makenal|Documents|music-synth|final|zedboard_hdmi.vhd</ClosedNode>
+         <ClosedNode>/chords C:|Users|ad9697|Documents|music-synth|final|chords.v</ClosedNode>
+         <ClosedNode>/chords_tb C:|Users|ad9697|Documents|music-synth|final|tb|chords_tb.v</ClosedNode>
+         <ClosedNode>/clamper - Behavioral C:|Users|ad9697|Documents|music-synth|final|clamper.vhd</ClosedNode>
+         <ClosedNode>/echo_tb C:|Users|ad9697|Documents|music-synth|final|echo_tb.v/echo_dut - echo</ClosedNode>
+         <ClosedNode>/echo_tb C:|Users|ad9697|Documents|music-synth|final|tb|echo_tb.v</ClosedNode>
+         <ClosedNode>/final_top C:|Users|ad9697|Documents|music-synth|final|final_top.v/adau1761_codec - adau1761_codec</ClosedNode>
+         <ClosedNode>/final_top C:|Users|ad9697|Documents|music-synth|final|final_top.v/hdmi - vga_hdmi - Behavioral</ClosedNode>
+         <ClosedNode>/final_top C:|Users|ad9697|Documents|music-synth|final|final_top.v/music_player - music_player</ClosedNode>
+         <ClosedNode>/final_top C:|Users|ad9697|Documents|music-synth|final|final_top.v/next_button_press_unit - button_press_unit</ClosedNode>
+         <ClosedNode>/final_top C:|Users|ad9697|Documents|music-synth|final|final_top.v/play_button_press_unit - button_press_unit</ClosedNode>
+         <ClosedNode>/final_top C:|Users|ad9697|Documents|music-synth|final|final_top.v/wd_top - wave_display_top</ClosedNode>
+         <ClosedNode>/final_top C:|Users|ad9697|Documents|music-synth|final|src|final_top.v</ClosedNode>
+         <ClosedNode>/lab5_top C:|Users|ad9697|Documents|music-synth|final|src|lab5_top.v</ClosedNode>
+         <ClosedNode>/wave_capture_tb C:|Users|ad9697|Documents|music-synth|final|tb|wave_capture_tb.v</ClosedNode>
+         <ClosedNode>/wave_capture_tb C:|Users|ad9697|Documents|music-synth|final|wave_capture_tb.v</ClosedNode>
+         <ClosedNode>/wave_display_tb C:|Users|ad9697|Documents|music-synth|final|tb|wave_display_tb.v</ClosedNode>
+         <ClosedNode>/wave_display_tb C:|Users|ad9697|Documents|music-synth|final|wave_display_tb.v</ClosedNode>
+         <ClosedNode>/zedboard_hdmi - Behavioral C:|Users|ad9697|Documents|music-synth|final|zedboard_hdmi.vhd</ClosedNode>
       </ClosedNodes>
       <SelectedItems>
-         <SelectedItem>Unassigned User Library Modules</SelectedItem>
+         <SelectedItem>play_button_press_unit - button_press_unit (C:/Users/ad9697/Documents/music-synth/final/src/button_press_unit.v)</SelectedItem>
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
       <ViewHeaderState orientation="horizontal" >000000ff0000000000000001000000010000000000000000000000000000000002020000000100000001000000640000014c000000020000000000000000000000000200000064ffffffff0000008100000003000000020000014c0000000100000003000000000000000100000003</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
-      <CurrentItem>Unassigned User Library Modules</CurrentItem>
+      <CurrentItem>play_button_press_unit - button_press_unit (C:/Users/ad9697/Documents/music-synth/final/src/button_press_unit.v)</CurrentItem>
    </ItemView>
    <ItemView engineview="BehavioralSim" sourcetype="" guiview="Process" >
       <ClosedNodes>
@@ -163,15 +156,77 @@
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
-      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000100000000000000000000000000000000000000000000000173000000010000000100000000000000000000000064ffffffff000000810000000000000001000001730000000100000000</ViewHeaderState>
-=======
-      <ViewHeaderState orientation="horizontal" >000000ff000000000000000100000001000000000000000000000000000000000000000000000000f1000000010000000100000000000000000000000064ffffffff000000810000000000000001000000f10000000100000000</ViewHeaderState>
->>>>>>> fdcc430a9fb13d82f710f6181066a19f3eaf5c04
+      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000100000000000000000000000000000000000000000000000176000000010000000100000000000000000000000064ffffffff000000810000000000000001000001760000000100000000</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
       <CurrentItem/>
    </ItemView>
-   <SourceProcessView>000000ff00000000000000020000011b0000011b01000000050100000002</SourceProcessView>
-   <CurrentView>Implementation</CurrentView>
+   <ItemView engineview="BehavioralSim" sourcetype="DESUT_VERILOG" guiview="Process" >
+      <ClosedNodes>
+         <ClosedNodesVersion>1</ClosedNodesVersion>
+         <ClosedNode>ISim Simulator</ClosedNode>
+      </ClosedNodes>
+      <SelectedItems>
+         <SelectedItem>Simulate Behavioral Model</SelectedItem>
+      </SelectedItems>
+      <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
+      <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
+      <ViewHeaderState orientation="horizontal" >000000ff000000000000000100000001000000000000000000000000000000000000000000000000f8000000010000000100000000000000000000000064ffffffff000000810000000000000001000000f80000000100000000</ViewHeaderState>
+      <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
+      <CurrentItem>Simulate Behavioral Model</CurrentItem>
+   </ItemView>
+   <ItemView engineview="BehavioralSim" sourcetype="DESUT_VHDL_ARCHITECTURE" guiview="Process" >
+      <ClosedNodes>
+         <ClosedNodesVersion>1</ClosedNodesVersion>
+         <ClosedNode>ISim Simulator</ClosedNode>
+      </ClosedNodes>
+      <SelectedItems>
+         <SelectedItem/>
+      </SelectedItems>
+      <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
+      <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
+      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000100000000000000000000000000000000000000000000000176000000010000000100000000000000000000000064ffffffff000000810000000000000001000001760000000100000000</ViewHeaderState>
+      <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
+      <CurrentItem/>
+   </ItemView>
+   <ItemView engineview="BehavioralSim" guiview="Source" compilemode="ManualCompile" >
+      <ClosedNodes>
+         <ClosedNodesVersion>2</ClosedNodesVersion>
+      </ClosedNodes>
+      <SelectedItems>
+         <SelectedItem>clamp_channel.vhd (C:/Users/ad9697/Documents/music-synth/final/clamp_channel.vhd)</SelectedItem>
+      </SelectedItems>
+      <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
+      <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
+      <ViewHeaderState orientation="horizontal" >000000ff0000000000000001000000010000000000000000000000000000000000000000000000017b000000020000000000000000000000000000000064ffffffff0000008100000000000000020000010b0000000100000000000000700000000100000000</ViewHeaderState>
+      <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
+      <CurrentItem>clamp_channel.vhd (C:/Users/ad9697/Documents/music-synth/final/clamp_channel.vhd)</CurrentItem>
+   </ItemView>
+   <ItemView engineview="SynthesisOnly" guiview="Source" compilemode="ManualCompile" >
+      <ClosedNodes>
+         <ClosedNodesVersion>2</ClosedNodesVersion>
+      </ClosedNodes>
+      <SelectedItems>
+         <SelectedItem>final</SelectedItem>
+      </SelectedItems>
+      <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
+      <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
+      <ViewHeaderState orientation="horizontal" >000000ff0000000000000001000000010000000000000000000000000000000000000000000000017b000000020000000000000000000000000000000064ffffffff0000008100000000000000020000010b0000000100000000000000700000000100000000</ViewHeaderState>
+      <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
+      <CurrentItem>final</CurrentItem>
+   </ItemView>
+   <ItemView engineview="SynthesisOnly" sourcetype="DESUT_NGC" guiview="Process" >
+      <ClosedNodes>
+         <ClosedNodesVersion>1</ClosedNodesVersion>
+      </ClosedNodes>
+      <SelectedItems>
+         <SelectedItem/>
+      </SelectedItems>
+      <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
+      <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
+      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000100000000000000000000000000000000000000000000000176000000010000000100000000000000000000000064ffffffff000000810000000000000001000001760000000100000000</ViewHeaderState>
+      <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
+      <CurrentItem/>
+   </ItemView>
 </Project>
 <?xml version="1.0" encoding="utf-8"?>
 <!--This is an ISE project configuration file.-->
