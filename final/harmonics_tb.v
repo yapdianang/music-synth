@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-module note_player_tb();
+module harmonics_tb();
 
     reg clk, reset, play_enable, generate_next_sample;
     reg [5:0] note_to_load;
@@ -8,7 +8,7 @@ module note_player_tb();
     wire done_with_note, new_sample_ready, beat;
     wire [15:0] sample_out;
 
-    note_player np(
+    note_player  #(.INSTRUMENT(3'b001)) np(
         .clk(clk),
         .reset(reset),
 
@@ -56,6 +56,7 @@ module note_player_tb();
 		reset = 1'b1;
 		play_enable = 1;
 		{note_to_load, duration_to_load} = {6'd57, 6'd5};
+		
 		load_new_note = 1;
 		#50
 		reset = 1'b0;
@@ -71,12 +72,14 @@ module note_player_tb();
 		load_new_note = 1'b0;
 		#1000
 		load_new_note = 1'b1;
-		{note_to_load, duration_to_load} = {6'd51, 6'd50};
+		{note_to_load, duration_to_load} = {10'd009, 10'd395};
 		#10
 		load_new_note = 1'b0;
 		#4000
 		
 		play_enable = 0;
+		#4000
+		play_enable = 1;
 		
 		/*
 

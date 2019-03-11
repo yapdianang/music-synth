@@ -1,7 +1,7 @@
 `define NORMAL 3'b000
 `define ADD1 3'b001
-`define ADD2 3'b010
-`define ADD3 3'b011
+`define SQUARE 3'b010
+`define TRIANGLE 3'b011
 `define VIOLIN 3'b100
 `define CLARINET 3'b101
 `define TRUMPET 3'b110
@@ -26,7 +26,7 @@ wire [19:0] fr_out, step_size;
 
 wire release_note;
 wire rdy_1, rdy_2, rdy_3, rdy_4, rdy_5, rdy_6, rdy_7;
-wire [19:0] out_1, out_2, out_3, out_4, out_5, out_6, out_7;
+wire [15:0] out_1, out_2, out_3, out_4, out_5, out_6, out_7;
 assign step_size = play_enable ? fr_out:20'b0;
 
 countdown_timer ct(
@@ -54,6 +54,61 @@ sine_reader first_harmonic(
 	.sample(out_1)
 );
 
+sine_reader second_harmonic(
+	.clk(clk),
+	.reset(reset),
+	.step_size(step_size<< 1),
+	.generate_next(generate_next_sample),
+	.sample_ready(rdy_2),
+	.sample(out_2)
+);
+
+sine_reader third_harmonic(
+	.clk(clk),
+	.reset(reset),
+	.step_size((step_size<< 1) + step_size),
+	.generate_next(generate_next_sample),
+	.sample_ready(rdy_3),
+	.sample(out_3)
+);
+
+sine_reader forth_harmonic(
+	.clk(clk),
+	.reset(reset),
+	.step_size(step_size<< 2),
+	.generate_next(generate_next_sample),
+	.sample_ready(rdy_4),
+	.sample(out_4)
+);
+
+sine_reader fifth_harmonic(
+	.clk(clk),
+	.reset(reset),
+	.step_size((step_size<<2) + (step_size)),
+	.generate_next(generate_next_sample),
+	.sample_ready(rdy_5),
+	.sample(out_5)
+);
+
+sine_reader sixth_harmonic(
+	.clk(clk),
+	.reset(reset),
+	.step_size((step_size<<2) + (step_size << 1)),
+	.generate_next(generate_next_sample),
+	.sample_ready(rdy_6),
+	.sample(out_6)
+);
+
+sine_reader seventh_harmonic(
+	.clk(clk),
+	.reset(reset),
+	.step_size((step_size<<2) + (step_size << 1) + step_size),
+	.generate_next(generate_next_sample),
+	.sample_ready(rdy_7),
+	.sample(out_7)
+);
+
+/*
 sine_reader second_harmonic(
 	.clk(clk),
 	.reset(reset),
@@ -107,6 +162,7 @@ sine_reader seventh_harmonic(
 	.sample_ready(rdy_7),
 	.sample(out_7)
 );
+*/
 
 reg [16:0] sample_out_reg;
 
@@ -116,13 +172,14 @@ always @(*) begin
 			sample_out_reg =  ($signed(out_1) >>> 1);
 		end
 		`ADD1: begin
-			sample_out_reg = (($signed(out_1) >>> 1) + ($signed(out_2) >>> 2));
+			sample_out_reg = (($signed(out_1) >>> 1) + ($signed(out_2) >>> 2) + ($signed(out_4) >>> 2));
 		end
-		`ADD2: begin
-			sample_out_reg =  (($signed(out_1) >>> 1) + ($signed(out_2) >>> 2) + ($signed(out_3) >>> 3));
+		`SQUARE: begin
+			//sample_out_reg =  ((($signed(out_1) >>> 2) + ($signed(out_1) >>> 4) + ($signed(out_1) >>> 7)) +(($signed(out_3) >>> 4) + ($signed(out_3) >>> 5) + ($signed(out_3) >>> 6)) + (($signed(out_5) >>> 4) + ($signed(out_5) >>> 9)) + (($signed(out_7) >>> 5) + ($signed(out_7) >>> 7) + ($signed(out_7) >>> 8) + ($signed(out_7) >>> 9)));
+			sample_out_reg =  ((($signed(out_1) >>> 2) + ($signed(out_1) >>> 4) + ($signed(out_1) >>> 7)) );
 		end
-		`ADD3: begin
-			sample_out_reg =  (($signed(out_1) >>> 1) + ($signed(out_2) >>> 2) + ($signed(out_3) >>> 3) + ($signed(out_4) >>> 3));
+		`TRIANGLE: begin
+			sample_out_reg =  (($signed(out_1) >>> 1) + ($signed(out_2) >>> 2) + ($signed(out_3) >>> 3) + ($signed(out_4) >>> 4) + ($signed(out_5) >>> 5) + ($signed(out_6) >>> 6) + ($signed(out_7) >>> 7));
 		end
 		`VIOLIN: begin
 			sample_out_reg =  (($signed(out_1) >>> 1) + ($signed(out_2) >>> 3) + ($signed(out_3) >>> 5) + ($signed(out_4) >>> 7) + ($signed(out_5) >>> 7) + ($signed(out_6) >>> 8) + ($signed(out_7) >>> 9));
