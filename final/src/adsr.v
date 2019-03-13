@@ -29,7 +29,7 @@ module adsr(
     );
 	 
 wire [3:0] curr_state;
-reg [3;0] next_state;
+reg [3:0] next_state;
 
 beat_n beat_480(
 	
