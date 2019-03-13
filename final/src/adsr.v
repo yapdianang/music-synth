@@ -8,6 +8,8 @@
 // Project Name: music-synth
 // Target Devices: FPGA
 // Description: Performs amplitude modulation on 16-bit input using Attack-Decay-Sustain-Release envelope
+//
+// The codec is expected to request 48k samples per second.
 //////////////////////////////////////////////////////////////////////////////////
 `define ATTACK 2'd0
 `define DECAY 2'd1
@@ -17,6 +19,7 @@
 `define t_d 4800
 `define t_s 4800
 `define t_r 4800
+`define step 480
 
 module adsr(
 	input clk,
@@ -24,9 +27,14 @@ module adsr(
 	input in_ready,
 	output signed [15:0] sample_out
     );
-
+	 
 wire [3:0] curr_state;
 reg [3;0] next_state;
+
+beat_n beat_480(
+	
+);
+
 
 curr_state = 
 endmodule
