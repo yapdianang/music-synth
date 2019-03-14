@@ -54,7 +54,7 @@ dffre #(15) read_ff(.clk(clk), .r(reset), .en(in_ready), .d(next_read_addr), .q(
 
 assign next_delay_state = (curr_delay_state == 3'd4) ? 3'd0 : curr_delay_state + 3'd1;
 
-assign next_att_state = curr_att_state + 1;
+assign next_att_state = curr_att_state + 2'd1;
 
 //assign next_write_addr = (curr_write_addr == MAX_ADDR) ? 15'd0 : (next_D ? delay : curr_write_addr + 15'd1);
 assign next_read_addr = ((curr_read_addr == `MAX_ADDR) | next_D) ? 15'd0 : curr_read_addr + 15'd1;

@@ -43,6 +43,7 @@ initial begin
 	reset = 1'b1;
 	repeat (4) #5 clk = ~clk;
 	reset = 1'b0;
+
 	forever #5 clk = ~clk;
 end
 
@@ -57,9 +58,7 @@ initial begin
 end 
 
 initial begin
-	step_size = {10'd337, 10'd942};
-	next_D = 1'b0;
-	next_H = 1'b0;
+	step_size = {10'd337, 10'd942};	
 	#200
 	@(negedge reset);
 	@(negedge clk);
@@ -71,6 +70,11 @@ end
 initial begin
 	next_D = 1'b0;
 	next_H = 1'b0;
+	#100
+	next_H = 1'b1;
+	#10
+	next_H = 1'b0;
+
 end
 
 
