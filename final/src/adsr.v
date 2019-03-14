@@ -35,27 +35,27 @@
 
 module adsr(
 	input clk,
-	input_reset,
+	input reset,
 	input signed [15:0] sample_in,
 	input in_ready,
 	output signed [15:0] sample_out
     );
 	 
-wire [3:0] curr_state;
-reg [3:0] next_state;
+wire [1:0] curr_state;
+reg [1:0] next_state;
 
-wire [1:0] step;
-wire [1:0] next_step;
+wire [3:0] step;
+wire [3:0] next_step;
 
 wire [15:0] curr_sample_count;
 reg [15:0] next_sample_count;
+reg [15:0] out_reg;
 wire switch_step;
-reg [3:0] state;
 
 /*
 The STEP size is assumed constant for all stages, as well as the step count.
 */
-beat_n #(.SIGNAL_WIDTH(16), .COUNT_TO(STEP)) beat_STEP(
+beat_n #(.SIGNAL_WIDTH(16), .COUNT_TO(480)) beat_STEP(
 	.clk(clk),
 	.reset(reset),
 	.count_en(in_ready),
@@ -64,7 +64,7 @@ beat_n #(.SIGNAL_WIDTH(16), .COUNT_TO(STEP)) beat_STEP(
 
 dffre #(.WIDTH(4)) step_ff(
 	.clk(clk),
-	.reset(reset),
+	.r(reset),
 	.en(switch_step),
 	.d(next_step),
 	.q(step)
@@ -72,7 +72,7 @@ dffre #(.WIDTH(4)) step_ff(
 
 dffre #(.WIDTH(16)) sample_count_ff(
 	.clk(clk),
-	.reset(reset),
+	.r(reset),
 	.en(in_ready),
 	.d(next_sample_count),
 	.q(curr_sample_count)
@@ -80,7 +80,7 @@ dffre #(.WIDTH(16)) sample_count_ff(
 
 dffre #(.WIDTH(2)) state_ff(
 	.clk(clk),
-	.reset(reset),
+	.r(reset),
 	.en(in_ready),
 	.d(next_state),
 	.q(curr_state)
@@ -89,7 +89,7 @@ dffre #(.WIDTH(2)) state_ff(
 assign next_step = (step == `S9) ? 4'd0 : step + 4'd1;
 
 always @(*) begin
-	case (state)
+	case (curr_state)
 		`ATTACK: begin
 			next_state = (curr_sample_count == `t_a) ? `DECAY : `ATTACK;
 			next_sample_count = (curr_sample_count == `t_a) ? 16'd0 : curr_sample_count + 16'd1;
@@ -116,7 +116,7 @@ always @(*) begin
 		end
 	endcase
 
-	casex ({state, step})
+	casex ({curr_state, step})
 		{`ATTACK, `S0}:begin
 			out_reg = (sample_in >>> 4) + (sample_in >>> 5);
 		end
@@ -177,7 +177,7 @@ always @(*) begin
 		{`DECAY, `S9}: begin
 			out_reg = (sample_in >>> 1);
 		end
-		{`SUSTAIN, xxxx}: begin
+		6'b10xxxx: begin //SUSTAIN
 			out_reg = (sample_in >>> 1);
 		end
 		{`RELEASE, `S0}: begin
@@ -217,6 +217,6 @@ always @(*) begin
 	
 end
 
-assign out = out_reg;
+assign sample_out = out_reg;
 
 endmodule
