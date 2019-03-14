@@ -116,7 +116,7 @@ always @(*) begin
 		end
 	endcase
 
-	case ({state, step})
+	casex ({state, step})
 		{`ATTACK, `S0}:begin
 			out_reg = (sample_in >>> 4) + (sample_in >>> 5);
 		end
@@ -171,11 +171,44 @@ always @(*) begin
 		{`DECAY, `S7}: begin
 			out_reg = (sample_in >>> 1) + (sample_in >>> 4) + (sample_in >>> 6);
 		end
-		{`DECAY, `S0}: begin
+		{`DECAY, `S8}: begin
 			out_reg = (sample_in >>> 1) + (sample_in >>> 5);
 		end
-		{`DECAY, `S0}: begin
+		{`DECAY, `S9}: begin
 			out_reg = (sample_in >>> 1);
+		end
+		{`SUSTAIN, xxxx}: begin
+			out_reg = (sample_in >>> 1);
+		end
+		{`RELEASE, `S0}: begin
+			out_reg = (sample_in >>> 1);
+		end
+		{`RELEASE, `S1}: begin
+			out_reg = (sample_in >>> 2) + (sample_in >>> 3) + (sample_in >>> 4);
+		end
+		{`RELEASE, `S2}: begin
+			out_reg = (sample_in >>> 2) + (sample_in >>> 3) + (sample_in >>> 5);
+		end
+		{`RELEASE, `S3}: begin
+			out_reg = (sample_in >>> 2) + (sample_in >>> 4) + (sample_in >>> 5);
+		end
+		{`RELEASE, `S4}: begin
+			out_reg = (sample_in >>> 2) + (sample_in >>> 4);
+		end
+		{`RELEASE, `S5}: begin
+			out_reg = (sample_in >>> 2);
+		end
+		{`RELEASE, `S6}: begin
+			out_reg = (sample_in >>> 3) + (sample_in >>> 4) + (sample_in >>> 6);
+		end
+		{`RELEASE, `S7}: begin
+			out_reg = (sample_in >>> 3) + (sample_in >>> 5);
+		end
+		{`RELEASE, `S8}: begin
+			out_reg = (sample_in >>> 4) + (sample_in >>> 5);
+		end
+		{`RELEASE, `S9}: begin
+			out_reg = (sample_in >>> 4);
 		end
 		default: begin
 			out_reg = 16'b0;
@@ -183,6 +216,7 @@ always @(*) begin
 	endcase
 	
 end
+
 assign out = out_reg;
 
 endmodule
