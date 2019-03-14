@@ -1,3 +1,5 @@
+
+
 //
 //  music_player module
 //
@@ -54,7 +56,194 @@
         .song_done(song_done)
     );
 
-//
+//  ****************************************************************************
+//      Song Reader
+//  ****************************************************************************
+	 wire beat;
+    wire [5:0] note_to_play;
+    wire [5:0] duration_for_note;
+    wire new_note1, new_note2, new_note3;
+    wire note_done1, note_done2, note_done3;
+	 wire np1_busy, np2_busy, np3_busy;
+    song_reader song_reader(
+        .clk(clk),
+        .reset(reset | reset_player),
+        .play(play),
+		  .beat(beat),
+        .song(current_song),
+        .song_done(song_done),
+        .note(note_to_play),
+        .duration(duration_for_note),
+        .new_note1(new_note1),
+		  .new_note2(new_note2),
+		  .new_note3(new_note3),
+        .note_done1(note_done1),
+		  .note_done2(note_done2),
+		  .note_done3(note_done3),
+		  .np1_busy(np1_busy),
+		  .np2_busy(np2_busy),
+		  .np3_busy(np3_busy)
+    );
+
+//   
+//  ****************************************************************************
+//      Note Player
+//  ****************************************************************************
+//  Making three note players
+
+   
+    wire generate_next_sample;
+    wire [15:0] note_sample, note_sample1, note_sample2, note_sample3;
+    wire note_sample_ready, note_sample_ready1, note_sample_ready2, note_sample_ready3;
+	 wire [5:0] note_np1, duration_np1;
+	 wire [5:0] note_np2, duration_np2;
+	 wire [5:0] note_np3, duration_np3;
+	 wire [15:0] out1, out2;
+	// wire play_note1, play_note2, play_note3;
+	 
+	 // dffs to keep track of which note player gets the new note and duration
+	 dffre #(.WIDTH(6)) np1_note_dff(
+    .clk(clk),
+    .r(reset),
+    .en(new_note1),
+    .d(note_to_play),
+    .q(note_np1)
+	);
+
+	dffre #(.WIDTH(6)) np1_duration_dff(
+    .clk(clk),
+    .r(reset),
+    .en(new_note1),
+    .d(duration_for_note),
+    .q(duration_np1)
+	);
+	
+	 dffre #(.WIDTH(6)) np2_note_dff(
+    .clk(clk),
+    .r(reset),
+    .en(new_note2),
+    .d(note_to_play),
+    .q(note_np2)
+	);
+
+	dffre #(.WIDTH(6)) np2_duration_dff(
+    .clk(clk),
+    .r(reset),
+    .en(new_note2),
+    .d(duration_for_note),
+    .q(duration_np2)
+	);
+	
+	 dffre #(.WIDTH(6)) np3_note_dff(
+    .clk(clk),
+    .r(reset),
+    .en(new_note3),
+    .d(note_to_play),
+    .q(note_np3)
+	);
+
+	dffre #(.WIDTH(6)) np3_duration_dff(
+    .clk(clk),
+    .r(reset),
+    .en(new_note3),
+    .d(duration_for_note),
+    .q(duration_np3)
+	);
+	
+	// dffs to keep track of which note players will be busy
+	/*
+	dffre #(.WIDTH(1)) busy_np1_dff(
+    .clk(clk),
+    .r(reset),
+    .en(new_note1 | note_done1),
+    .d(~play_note1),
+    .q(play_note1)
+	);
+	
+	dffre #(.WIDTH(1)) busy_np2_dff(
+    .clk(clk),
+    .r(reset),
+    .en(new_note2 | note_done2),
+    .d(~play_note2),
+    .q(play_note2)
+	);
+	
+	dffre #(.WIDTH(1)) busy_np3_dff(
+    .clk(clk),
+    .r(reset),
+    .en(new_note3 | note_done3),
+    .d(~play_note3),
+    .q(play_note3)
+	);
+	*/
+	
+    note_player note_player1(
+        .clk(clk),
+        .reset(reset),
+        .play_enable(play),
+        .note_to_load(note_np1),
+        .duration_to_load(duration_np1),
+        .load_new_note(new_note1),
+        .done_with_note(note_done1),
+        .beat(beat),
+        .generate_next_sample(generate_next_sample),
+        .sample_out(note_sample1),
+        .new_sample_ready(note_sample_ready1)
+    );
+	 
+	   note_player note_player2(
+        .clk(clk),
+        .reset(reset),
+        .play_enable(play),
+        .note_to_load(note_np2),
+        .duration_to_load(duration_np2),
+        .load_new_note(new_note2),
+        .done_with_note(note_done2),
+        .beat(beat),
+        .generate_next_sample(generate_next_sample),
+        .sample_out(note_sample2),
+        .new_sample_ready(note_sample_ready2)
+    );
+	 
+	   note_player note_player3(
+        .clk(clk),
+        .reset(reset),
+        .play_enable(play),
+        .note_to_load(note_np3),
+        .duration_to_load(duration_np3),
+        .load_new_note(new_note3),
+        .done_with_note(note_done3),
+        .beat(beat),
+        .generate_next_sample(generate_next_sample),
+        .sample_out(note_sample3),
+        .new_sample_ready(note_sample_ready3)
+    );
+	 
+/*
+signed_add signed_add1(
+	//.inA(play_note1 ? (note_sample1) : 16'b0),
+	//.inB(play_note2 ? (note_sample2) : 16'b0),
+	//.inA(np1_busy ?  (note_sample1) : 16'b0),
+	//.inB(np2_busy ?  (note_sample2) : 16'b0),
+	.inA(note_sample1),
+	.inB(note_sample2),
+	.out(out1)
+);
+
+signed_add signed_add2(
+	.inA(out1),
+	//.inB(play_note3 ? (note_sample3) : 16'b0),
+	.inB(note_sample3),
+	.out(out2)
+);
+*/
+	// assign note_sample = out2;
+	 assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample1)>>>4) + ($signed(note_sample1)>>>6) + ($signed(note_sample2)>>>2) + ($signed(note_sample2)>>>4) + ($signed(note_sample2)>>>6) + ($signed(note_sample3)>>>2) + ($signed(note_sample3)>>>4) + ($signed(note_sample3)>>>6); // TODO : handle overflow
+    //assign note_sample =   (note_sample1>>3) + (note_sample2>>3) + (note_sample3>>3);
+	// assign note_sample =   ($signed(note_sample1)>>>3) ;
+	 assign note_sample_ready = (note_sample_ready1 | note_sample_ready2 | note_sample_ready3);
+	
+/*
 //  ****************************************************************************
 //      Song Reader
 //  ****************************************************************************
@@ -97,7 +286,7 @@
         .sample_out(note_sample),
         .new_sample_ready(note_sample_ready)
     );
-      
+      */
 //   
 //  ****************************************************************************
 //      Beat Generator
@@ -130,3 +319,4 @@
     );
 
 endmodule
+

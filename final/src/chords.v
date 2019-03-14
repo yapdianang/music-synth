@@ -16,6 +16,8 @@ module chords(
 		output [15:0] sample_out_player, // concatenated samples out
 		output new_sample_ready_player // from the not player, won't be used? QUESTION
     );
+	 
+	 
 /*	 
 	 wire player1_done, player2_done, player3_done;
 	 reg [2:0] load_d;

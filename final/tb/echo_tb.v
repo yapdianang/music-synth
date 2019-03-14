@@ -24,7 +24,7 @@ sine_reader dut_sr(
 	 
     .sample_ready(in_ready),
     .sample (sample_in)
-);  
+);   
 
 echo dut_echo(
 	.clk(clk),

@@ -14,7 +14,7 @@ wire chip_data_enable, chip_hsync, chip_vsync, chip_reset, xclk, xclk_n;
 wire [11:0] chip_data;
 wire [`log2NUM_COLS-1:0] x;
 wire [`log2NUM_ROWS-1:0] y;
-
+ 
 wire valid_pixel;
 wire [7:0] wd_r, wd_g, wd_b;
 
