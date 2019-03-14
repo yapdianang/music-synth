@@ -98,7 +98,7 @@
 	 wire [5:0] note_np1, duration_np1;
 	 wire [5:0] note_np2, duration_np2;
 	 wire [5:0] note_np3, duration_np3;
-	 wire [15:0] out1, out2;
+	// wire [15:0] out1, out2;
 	// wire play_note1, play_note2, play_note3;
 	 
 	 // dffs to keep track of which note player gets the new note and duration
@@ -237,10 +237,7 @@ signed_add signed_add2(
 	.out(out2)
 );
 */
-	// assign note_sample = out2;
-	 assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample1)>>>4) + ($signed(note_sample1)>>>6) + ($signed(note_sample2)>>>2) + ($signed(note_sample2)>>>4) + ($signed(note_sample2)>>>6) + ($signed(note_sample3)>>>2) + ($signed(note_sample3)>>>4) + ($signed(note_sample3)>>>6); // TODO : handle overflow
-    //assign note_sample =   (note_sample1>>3) + (note_sample2>>3) + (note_sample3>>3);
-	// assign note_sample =   ($signed(note_sample1)>>>3) ;
+   assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample1)>>>4) + ($signed(note_sample1)>>>6) + ($signed(note_sample2)>>>2) + ($signed(note_sample2)>>>4) + ($signed(note_sample2)>>>6) + ($signed(note_sample3)>>>2) + ($signed(note_sample3)>>>4) + ($signed(note_sample3)>>>6); // TODO : handle overflow
 	 assign note_sample_ready = (note_sample_ready1 | note_sample_ready2 | note_sample_ready3);
 	
 /*
