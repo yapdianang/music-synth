@@ -5,26 +5,27 @@ module chords_tb(
 	 
 	 reg clk;
 	 reg reset, load_new_note, play_enable, generate_next_sample;
-	 wire player_available, beat;
-	 wire [15:0] sample_out_player;
-	 wire new_sample_ready_player;
-	 reg [5:0] note_to_load, duration_to_load;
+	 //wire player_available, beat;
+	 //wire [15:0] sample_out_player;
+	 //wire new_sample_ready_player;
+	 reg [5:0] note, duration;
 
-chords chords_dut(
-		 .clk(clk), // input for ff
-		 .reset(reset), // input for ff 
-		 .new_note(load_new_note), // from song reader
-       .note_to_load(note_to_load), // from song reader, from song reader
-		 .duration_to_load(duration_to_load), // from song reader
-		 .play_enable(play_enable), // from song reader
-		 .beat(beat),
-		 .generate_next_sample(generate_next_sample),
-		 .player_available(player_available), // output for chords
-		 .sample_out_player(sample_out_player), // concatenated samples out
-		 .new_sample_ready_player(new_sample_ready_player) // from the not player, won't be used? QUESTION
-    );
-	 
- 
+module song_reader(
+    .clk(clk),
+    .reset(reset),
+    .play(play),
+    .song(song),
+    .note_done1(note_done1),
+	 .note_done2(note_done2),
+	 .note_done3(note_done3),
+    .song_done(song_done),
+    .note(note), 
+    .duration(duration),
+    .new_note1(new_note1),
+	 .new_note2(new_note2),
+	 .new_note3(new_note3)
+); 
+/*
 		// made STOP shorter for testing
     beat_generator #(.WIDTH(17), .STOP(30)) beat_generator(
         .clk(clk),
@@ -32,6 +33,7 @@ chords chords_dut(
         .en(1'b1),
         .beat(beat)
     );
+	 */
     // Clock and reset
     initial begin 
         clk = 1'b0;
@@ -53,13 +55,27 @@ chords chords_dut(
     // Tests
     initial begin
 		reset = 1'b1;
-		play_enable = 1;
-		{note_to_load, duration_to_load} = {6'd57, 6'd5};
-		load_new_note = 1;
-		#10
+		play = 1;
+		song = 1'b01;
+		note_done1 = 0;
+		note_done2 = 0;
+		note_done3 = 0;
+		//{note, duration} = {1'b0, 6'd57, 6'd5, 3'b111};
+		//load_new_note = 1;
+		//#10
 		//reset = 1'b0; 
+		//reset = 1'b0;
+		//load_new_note = 0;
+		#50
 		reset = 1'b0;
-		load_new_note = 0;
+		note_done1 = 1;
+		//{note, duration} = {1'b1, 6'd57, 6'd5, 3'b111};
+		//load_new_note = 1;
+		#50
+		note_done2 = 1;
+		#50
+		note_done1 = 1;
+		//{note, duration} = {1'b0, 6'd57, 6'd5, 3'b111};
 		/*
 		#50
 		//play_enable = 0;
