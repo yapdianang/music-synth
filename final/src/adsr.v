@@ -147,7 +147,36 @@ always @(*) begin
 		{`ATTACK, `S9}: begin
 			out_reg = sample_in;
 		end
-		
+		{`DECAY, `S0}: begin
+			out_reg = (sample_in >>> 1) + (sample_in >>> 2) + (sample_in >>> 3) + (sample_in >>> 4);
+		end
+		{`DECAY, `S1}: begin
+			out_reg = (sample_in >>> 1) + (sample_in >>> 2) + (sample_in >>> 3);
+		end
+		{`DECAY, `S2}: begin
+			out_reg = (sample_in >>> 1) + (sample_in >>> 2) + (sample_in >>> 4);
+		end
+		{`DECAY, `S3}: begin
+			out_reg = (sample_in >>> 1) + (sample_in >>> 2); 
+		end
+		{`DECAY, `S4}: begin
+			out_reg = (sample_in >>> 1) + (sample_in >>> 3) + (sample_in >>> 4) + (sample_in >>> 6);
+		end
+		{`DECAY, `S5}: begin
+			out_reg = (sample_in >>> 1) + (sample_in >>> 3) + (sample_in >>> 5);
+		end
+		{`DECAY, `S6}: begin
+			out_reg = (sample_in >>> 1) + (sample_in >>> 3); 
+		end
+		{`DECAY, `S7}: begin
+			out_reg = (sample_in >>> 1) + (sample_in >>> 4) + (sample_in >>> 6);
+		end
+		{`DECAY, `S0}: begin
+			out_reg = (sample_in >>> 1) + (sample_in >>> 5);
+		end
+		{`DECAY, `S0}: begin
+			out_reg = (sample_in >>> 1);
+		end
 		default: begin
 			out_reg = 16'b0;
 		end
