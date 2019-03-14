@@ -41,7 +41,7 @@ initial begin
 	  sample_in = 16'b0111111111111111;
 	  @(posedge clk);
 	  in_ready = 1'b0;
-	  sample_in = 16'b1000000000000000;
+	  sample_in = 16'b0000000000000000;
 	  end
 end
 /*
