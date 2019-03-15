@@ -153,7 +153,7 @@ always @(*) begin
 			sample_out_reg =  (($signed(out_1) >>> 4) + ($signed(out_2) >>> 3) + ($signed(out_3) >>> 3) + ($signed(out_4) >>> 3) + ($signed(out_5) >>> 3) + ($signed(out_6) >>> 3) + ($signed(out_7) >>> 4));
 		end
 		`CUSTOM: begin
-			sample_out_reg =  (($signed(out_1) >>> 3) + ($signed(out_2) >>> 2) + ($signed(out_3) >>> 3) + ($signed(out_4) >>> 5) + ($signed(out_5) >>> 5) + ($signed(out_6) >>> 4) + ($signed(out_7) >>> 4));
+			sample_out_reg =  (($signed(out_1) >>> 3) + ($signed(out_2) >>> 3) + ($signed(out_3) >>> 3) + ($signed(out_4) >>> 5) + ($signed(out_5) >>> 5) + ($signed(out_6) >>> 5) + ($signed(out_7) >>> 4));
 		end
 
 	endcase
