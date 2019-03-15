@@ -24,7 +24,7 @@ module  note_player #(parameter INSTRUMENT = 3'b000)(
 
 wire [19:0] fr_out, step_size;
 
-wire release_note;
+//wire release_note;
 wire rdy_1, rdy_2, rdy_3, rdy_4, rdy_5, rdy_6, rdy_7;
 wire [15:0] out_1, out_2, out_3, out_4, out_5, out_6, out_7;
 assign step_size = (play_enable && play_note) ? fr_out:20'b0;
@@ -52,7 +52,7 @@ countdown_timer ct(
 	.clk(clk),
 	.reset(reset),
 	.playing(play_enable),
-	.load_new(load_new_note),
+	.load_new(delay_load_new_note),
 	.duration(duration_to_load),
 	.beat(beat),
 	.done(done_with_note)

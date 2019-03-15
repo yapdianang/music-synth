@@ -237,9 +237,11 @@ signed_add signed_add2(
 	.out(out2)
 );
 */
-   assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample1)>>>4) + ($signed(note_sample1)>>>6) + ($signed(note_sample2)>>>2) + ($signed(note_sample2)>>>4) + ($signed(note_sample2)>>>6) + ($signed(note_sample3)>>>2) + ($signed(note_sample3)>>>4) + ($signed(note_sample3)>>>6); // TODO : handle overflow
-	 assign note_sample_ready = (note_sample_ready1 | note_sample_ready2 | note_sample_ready3);
+   //assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample2)>>>2) + ($signed(note_sample3)>>>2) + ($signed(note_sample2)>>>2) + ($signed(note_sample2)>>>4) + ($signed(note_sample2)>>>6) + ($signed(note_sample3)>>>2) + ($signed(note_sample3)>>>4) + ($signed(note_sample3)>>>6); // TODO : handle overflow
 	
+  	 assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample2)>>>2) + ($signed(note_sample3)>>>2);
+	 assign note_sample_ready = (note_sample_ready1 | note_sample_ready2 | note_sample_ready3);
+	 
 /*
 //  ****************************************************************************
 //      Song Reader
