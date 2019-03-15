@@ -36,7 +36,7 @@
 module adsr(
 	input clk,
 	input reset,
-	input signed [15:0] sample_in,
+	input signed [15:0] predelay_sample_in,
 	input in_ready,
 	output signed [15:0] sample_out
     );
@@ -48,6 +48,7 @@ wire [3:0] step;
 wire [3:0] next_step;
 
 wire [15:0] curr_sample_count;
+wire signed [15:0] sample_in;
 reg [15:0] next_sample_count;
 reg [15:0] out_reg;
 wire switch_step;
@@ -86,6 +87,12 @@ dffre #(.WIDTH(2)) state_ff(
 	.q(curr_state)
 );
 
+dffr # (.WIDTH(16)) sample_ff(
+	.clk(clk),
+	.r(reset),
+	.d(predelay_sample_in),
+	.q(sample_in)
+);
 assign next_step = (step == `S9) ? 4'd0 : step + 4'd1;
 
 always @(*) begin
@@ -115,7 +122,7 @@ always @(*) begin
 			next_sample_count = 16'd0;
 		end
 	endcase
-
+   
 	casex ({curr_state, step})
 		{`ATTACK, `S0}:begin
 			out_reg = (sample_in >>> 4) + (sample_in >>> 5);
@@ -217,6 +224,17 @@ always @(*) begin
 	
 end
 
-assign sample_out = out_reg;
+wire signed [15:0] delay_sample_out;
+
+
+dffr #(.WIDTH(16)) timing_dffr (
+	.clk(clk),
+	.r(reset),
+	.d(out_reg),
+	.q(delay_sample_out)
+);
+
+
+assign sample_out = delay_sample_out;
 
 endmodule

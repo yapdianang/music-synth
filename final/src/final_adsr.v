@@ -117,7 +117,7 @@ module final_adsr(
 	 adsr adsr_mod(
 		.clk (clk_100),
 		.reset (reset),
-		.sample_in (mp_codec_sample),
+		.predelay_sample_in (mp_codec_sample),
 		.in_ready(new_sample),
 		.sample_out (codec_sample)
 );
