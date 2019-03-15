@@ -12,7 +12,7 @@ module song_rom (
 	wire [15:0] memory [127:0];				
 					
 	always @(posedge clk)				
-		dout = memory[addr];			
+		dout = memory[addr];		 	
 					
 	assign memory[	  0	] =	{1'b0, 6'd28, 6'd12, 3'b0};	// Note: 3C
 	assign memory[	  1	] =	{1'b0, 6'd32, 6'd12, 3'b0};	// Note: 3E
