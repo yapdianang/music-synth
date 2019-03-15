@@ -177,7 +177,7 @@
 	);
 	*/
 	
-    note_player note_player1(
+    note_player #(.INSTRUMENT(3'b010)) note_player1(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
@@ -191,7 +191,7 @@
         .new_sample_ready(note_sample_ready1)
     );
 	 
-	   note_player note_player2(
+	   note_player  #(.INSTRUMENT(3'b010)) note_player2(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
@@ -205,7 +205,7 @@
         .new_sample_ready(note_sample_ready2)
     );
 	 
-	   note_player note_player3(
+	   note_player  #(.INSTRUMENT(3'b010)) note_player3(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
@@ -237,9 +237,11 @@ signed_add signed_add2(
 	.out(out2)
 );
 */
-   assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample1)>>>4) + ($signed(note_sample1)>>>6) + ($signed(note_sample2)>>>2) + ($signed(note_sample2)>>>4) + ($signed(note_sample2)>>>6) + ($signed(note_sample3)>>>2) + ($signed(note_sample3)>>>4) + ($signed(note_sample3)>>>6); // TODO : handle overflow
-	 assign note_sample_ready = (note_sample_ready1 | note_sample_ready2 | note_sample_ready3);
+   //assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample2)>>>2) + ($signed(note_sample3)>>>2) + ($signed(note_sample2)>>>2) + ($signed(note_sample2)>>>4) + ($signed(note_sample2)>>>6) + ($signed(note_sample3)>>>2) + ($signed(note_sample3)>>>4) + ($signed(note_sample3)>>>6); // TODO : handle overflow
 	
+  	 assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample2)>>>2) + ($signed(note_sample3)>>>2);
+	 assign note_sample_ready = (note_sample_ready1 | note_sample_ready2 | note_sample_ready3);
+	 
 /*
 //  ****************************************************************************
 //      Song Reader
