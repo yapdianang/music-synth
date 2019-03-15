@@ -32,7 +32,7 @@
 `define S7 4'd7
 `define S8 4'd8
 `define S9 4'd9
-
+/*
 module adsr(
 	input clk,
 	input reset,
@@ -40,7 +40,14 @@ module adsr(
 	input in_ready,
 	output signed [15:0] sample_out
     );
-	 
+*/	
+module adsr(
+	input clk,
+	input reset,
+	input signed [15:0] sample_in,
+	input in_ready,
+	output signed [15:0] sample_out
+    );	
 wire [1:0] curr_state;
 reg [1:0] next_state;
 
@@ -48,10 +55,16 @@ wire [3:0] step;
 wire [3:0] next_step;
 
 wire [15:0] curr_sample_count;
-wire signed [15:0] sample_in;
+//wire signed [15:0] sample_in;
 reg [15:0] next_sample_count;
 reg [15:0] out_reg;
 wire switch_step;
+wire signed [15:0] shift_1 = $signed(sample_in) >>> 1;
+wire signed [15:0] shift_2 = $signed(sample_in) >>> 2;
+wire signed [15:0] shift_3 = $signed(sample_in) >>> 3;
+wire signed [15:0] shift_4 = $signed(sample_in) >>> 4;
+wire signed [15:0] shift_5 = $signed(sample_in) >>> 5;
+wire signed [15:0] shift_6 = $signed(sample_in) >>> 6;
 
 /*
 The STEP size is assumed constant for all stages, as well as the step count.
@@ -86,13 +99,14 @@ dffre #(.WIDTH(2)) state_ff(
 	.d(next_state),
 	.q(curr_state)
 );
-
+/*
 dffr # (.WIDTH(16)) sample_ff(
 	.clk(clk),
 	.r(reset),
 	.d(predelay_sample_in),
 	.q(sample_in)
 );
+*/
 assign next_step = (step == `S9) ? 4'd0 : step + 4'd1;
 
 always @(*) begin
@@ -125,97 +139,97 @@ always @(*) begin
    
 	casex ({curr_state, step})
 		{`ATTACK, `S0}:begin
-			out_reg = (sample_in >>> 4) + (sample_in >>> 5);
+			out_reg = (shift_4) + (shift_5);
 		end
 		{`ATTACK, `S1}: begin
-			out_reg = (sample_in >>> 3) + (sample_in >>> 4) + (sample_in >>> 6);
+			out_reg = (shift_3) + (shift_4) + (shift_6);
 		end
 		{`ATTACK, `S2}: begin
-			out_reg = (sample_in >>> 2) + (sample_in >>> 5) +(sample_in >>> 6) ;
+			out_reg = (shift_2) + (shift_5) +(shift_6) ;
 		end
 		{`ATTACK, `S3}: begin
-			out_reg = (sample_in >>> 2) + (sample_in >>> 3) + (sample_in >>> 5);
+			out_reg = (shift_2) + (shift_3) + (shift_5);
 		end
 		{`ATTACK, `S4}: begin
-			out_reg = sample_in >>> 1;
+			out_reg = shift_1;
 		end
 		{`ATTACK, `S5}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 4) + (sample_in >>> 5);
+			out_reg = (shift_1) + (shift_4) + (shift_5);
 		end
 		{`ATTACK, `S6}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 3) + (sample_in >>> 4) + (sample_in >>> 6);
+			out_reg = (shift_1) + (shift_3) + (shift_4) + (shift_6);
 		end
 		{`ATTACK, `S7}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 2) + (sample_in >>> 5) + (sample_in >>> 6);
+			out_reg = (shift_1) + (shift_2) + (shift_5) + (shift_6);
 		end
 		{`ATTACK, `S8}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 2) + (sample_in >>> 3) + (sample_in >>> 5);
+			out_reg = (shift_1) + (shift_2) + (shift_3) + (shift_5);
 		end
 		{`ATTACK, `S9}: begin
 			out_reg = sample_in;
 		end
 		{`DECAY, `S0}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 2) + (sample_in >>> 3) + (sample_in >>> 4);
+			out_reg = (shift_1) + (shift_2) + (shift_3) + (shift_4);
 		end
 		{`DECAY, `S1}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 2) + (sample_in >>> 3);
+			out_reg = (shift_1) + (shift_2) + (shift_3);
 		end
 		{`DECAY, `S2}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 2) + (sample_in >>> 4);
+			out_reg = (shift_1) + (shift_2) + (shift_4);
 		end
 		{`DECAY, `S3}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 2); 
+			out_reg = (shift_1) + (shift_2); 
 		end
 		{`DECAY, `S4}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 3) + (sample_in >>> 4) + (sample_in >>> 6);
+			out_reg = (shift_1) + (shift_3) + (shift_4) + (shift_6);
 		end
 		{`DECAY, `S5}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 3) + (sample_in >>> 5);
+			out_reg = (shift_1) + (shift_3) + (shift_5);
 		end
 		{`DECAY, `S6}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 3); 
+			out_reg = (shift_1) + (shift_3); 
 		end
 		{`DECAY, `S7}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 4) + (sample_in >>> 6);
+			out_reg = (shift_1) + (shift_4) + (shift_6);
 		end
 		{`DECAY, `S8}: begin
-			out_reg = (sample_in >>> 1) + (sample_in >>> 5);
+			out_reg = (shift_1) + (shift_5);
 		end
 		{`DECAY, `S9}: begin
-			out_reg = (sample_in >>> 1);
+			out_reg = (shift_1);
 		end
 		6'b10xxxx: begin //SUSTAIN
-			out_reg = (sample_in >>> 1);
+			out_reg = (shift_1);
 		end
 		{`RELEASE, `S0}: begin
-			out_reg = (sample_in >>> 1);
+			out_reg = (shift_1);
 		end
 		{`RELEASE, `S1}: begin
-			out_reg = (sample_in >>> 2) + (sample_in >>> 3) + (sample_in >>> 4);
+			out_reg = (shift_2) + (shift_3) + (shift_4);
 		end
 		{`RELEASE, `S2}: begin
-			out_reg = (sample_in >>> 2) + (sample_in >>> 3) + (sample_in >>> 5);
+			out_reg = (shift_2) + (shift_3) + (shift_5);
 		end
 		{`RELEASE, `S3}: begin
-			out_reg = (sample_in >>> 2) + (sample_in >>> 4) + (sample_in >>> 5);
+			out_reg = (shift_2) + (shift_4) + (shift_5);
 		end
 		{`RELEASE, `S4}: begin
-			out_reg = (sample_in >>> 2) + (sample_in >>> 4);
+			out_reg = (shift_2) + (shift_4);
 		end
 		{`RELEASE, `S5}: begin
-			out_reg = (sample_in >>> 2);
+			out_reg = (shift_2);
 		end
 		{`RELEASE, `S6}: begin
-			out_reg = (sample_in >>> 3) + (sample_in >>> 4) + (sample_in >>> 6);
+			out_reg = (shift_3) + (shift_4) + (shift_6);
 		end
 		{`RELEASE, `S7}: begin
-			out_reg = (sample_in >>> 3) + (sample_in >>> 5);
+			out_reg = (shift_3) + (shift_5);
 		end
 		{`RELEASE, `S8}: begin
-			out_reg = (sample_in >>> 4) + (sample_in >>> 5);
+			out_reg = (shift_4) + (shift_5);
 		end
 		{`RELEASE, `S9}: begin
-			out_reg = (sample_in >>> 4);
+			out_reg = (shift_4);
 		end
 		default: begin
 			out_reg = 16'b0;
@@ -224,9 +238,9 @@ always @(*) begin
 	
 end
 
-wire signed [15:0] delay_sample_out;
+//wire signed [15:0] delay_sample_out;
 
-
+/*
 dffr #(.WIDTH(16)) timing_dffr (
 	.clk(clk),
 	.r(reset),
@@ -234,7 +248,7 @@ dffr #(.WIDTH(16)) timing_dffr (
 	.q(delay_sample_out)
 );
 
-
-assign sample_out = delay_sample_out;
+*/
+assign sample_out = out_reg;
 
 endmodule

@@ -113,7 +113,7 @@ module final_adsr(
         .sample_out(mp_codec_sample),
         .new_sample_generated(new_sample)
     );
-	 
+/*	 
 	 adsr adsr_mod(
 		.clk (clk_100),
 		.reset (reset),
@@ -121,7 +121,14 @@ module final_adsr(
 		.in_ready(new_sample),
 		.sample_out (codec_sample)
 );
-	 
+*/
+	 adsr adsr_mod(
+		.clk (clk_100),
+		.reset (reset),
+		.sample_in (mp_codec_sample),
+		.in_ready(new_sample),
+		.sample_out (codec_sample)
+); 
     dff #(.WIDTH(17)) sample_reg (
         .clk(clk_100),
         .d({new_sample, codec_sample}),
