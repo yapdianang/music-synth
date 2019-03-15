@@ -44,7 +44,7 @@ module adsr(
 module adsr(
 	input clk,
 	input reset,
-	input signed [15:0] sample_in,
+	input signed [15:0] pre_sample_in,
 	input in_ready,
 	output signed [15:0] sample_out
     );	
@@ -55,16 +55,69 @@ wire [3:0] step;
 wire [3:0] next_step;
 
 wire [15:0] curr_sample_count;
-//wire signed [15:0] sample_in;
+wire signed [15:0] sample_in;
 reg [15:0] next_sample_count;
 reg [15:0] out_reg;
 wire switch_step;
-wire signed [15:0] shift_1 = $signed(sample_in) >>> 1;
-wire signed [15:0] shift_2 = $signed(sample_in) >>> 2;
-wire signed [15:0] shift_3 = $signed(sample_in) >>> 3;
-wire signed [15:0] shift_4 = $signed(sample_in) >>> 4;
-wire signed [15:0] shift_5 = $signed(sample_in) >>> 5;
-wire signed [15:0] shift_6 = $signed(sample_in) >>> 6;
+
+dffre #(.WIDTH(16)) sample(
+	.clk(clk),
+	.r(reset),
+	.en(in_ready),
+	.d(pre_sample_in),
+	.q(sample_in)
+);
+
+wire signed [15:0] pre_shift_1 = $signed(sample_in) >>> 1;
+wire signed [15:0] pre_shift_2 = $signed(sample_in) >>> 2;
+wire signed [15:0] pre_shift_3 = $signed(sample_in) >>> 3;
+wire signed [15:0] pre_shift_4 = $signed(sample_in) >>> 4;
+wire signed [15:0] pre_shift_5 = $signed(sample_in) >>> 5;
+wire signed [15:0] pre_shift_6 = $signed(sample_in) >>> 6;
+
+dffre #(.WIDTH(16)) shift_1_ff(
+	.clk(clk),
+	.r(reset),
+	.en(in_ready),
+	.d(pre_shift_1),
+	.q(shift_1)
+);
+dffre #(.WIDTH(16)) shift_2_ff(
+	.clk(clk),
+	.r(reset),
+	.en(in_ready),
+	.d(pre_shift_2),
+	.q(shift_2)
+);
+dffre #(.WIDTH(16)) shift_3_ff(
+	.clk(clk),
+	.r(reset),
+	.en(in_ready),
+	.d(pre_shift_3),
+	.q(shift_3)
+);
+dffre #(.WIDTH(16)) shift_4_ff(
+	.clk(clk),
+	.r(reset),
+	.en(in_ready),
+	.d(pre_shift_4),
+	.q(shift_4)
+);
+dffre #(.WIDTH(16)) shift_5_ff(
+	.clk(clk),
+	.r(reset),
+	.en(in_ready),
+	.d(pre_shift_5),
+	.q(shift_5)
+);
+dffre #(.WIDTH(16)) shift_6_ff(
+	.clk(clk),
+	.r(reset),
+	.en(in_ready),
+	.d(pre_shift_6),
+	.q(shift_6)
+);
+
 
 /*
 The STEP size is assumed constant for all stages, as well as the step count.
