@@ -8,7 +8,7 @@ module harmonics_tb();
     wire done_with_note, new_sample_ready, beat;
     wire [15:0] sample_out;
 
-    note_player  #(.INSTRUMENT(3'b001)) np(
+    note_player  #(.INSTRUMENT(3'b010)) np(
         .clk(clk),
         .reset(reset),
 
