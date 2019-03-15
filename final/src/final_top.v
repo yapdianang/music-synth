@@ -48,7 +48,7 @@ module final_top(
     input btn_down,
 
     // pmod Keypad
-    //inout [7:0] pmod_kypd,
+    inout [7:0] pmod_kypd,
 
     output [3:0] VGA_R,
     output [3:0] VGA_G,
