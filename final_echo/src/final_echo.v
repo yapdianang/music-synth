@@ -115,10 +115,10 @@ module final_echo(
     );
 	 
 	 echo echo_mod(
-		.clk (clk),
+		.clk (clk_100),
 		.reset (reset),
-		.sample_in (codec_sample),
-		.in_ready(new_sample),
+		.sample_in (mp_codec_sample),
+		.in_ready(mp_new_sample),
 		.next_D(1'b0),
 		.next_H(1'b0),
 		.out (codec_sample),

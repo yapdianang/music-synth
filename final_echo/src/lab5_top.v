@@ -1,4 +1,4 @@
-module final_echo(
+module lab5_top(
     /*
 	 'define H_SYNC_PULSE 112
 	 'define H_BACK_PORCH 248
@@ -46,9 +46,6 @@ module final_echo(
     input btn_left,
     input btn_right,
     input btn_down,
-
-    // pmod Keypad
-    //inout [7:0] pmod_kypd,
 
     output [3:0] VGA_R,
     output [3:0] VGA_G,
@@ -102,30 +99,17 @@ module final_echo(
 //  ****************************************************************************
 //       
     wire new_frame;
-    wire [15:0] codec_sample, mp_codec_sample, flopped_sample;
-    wire new_sample, mp_new_sample, flopped_new_sample;
+    wire [15:0] codec_sample, flopped_sample;
+    wire new_sample, flopped_new_sample;
     music_player #(.BEAT_COUNT(BEAT_COUNT)) music_player(
         .clk(clk_100),
         .reset(reset),
         .play_button(play),
         .next_button(next),
         .new_frame(new_frame), 
-        .sample_out(mp_codec_sample),
-        .new_sample_generated(mp_new_sample)
+        .sample_out(codec_sample),
+        .new_sample_generated(new_sample)
     );
-	 
-	 echo echo_mod(
-		.clk (clk),
-		.reset (reset),
-		.sample_in (codec_sample),
-		.in_ready(new_sample),
-		.next_D(1'b0),
-		.next_H(1'b0),
-		.out (codec_sample),
-		.out_ready (new_sample)
-);
-
-	 
     dff #(.WIDTH(17)) sample_reg (
         .clk(clk_100),
         .d({new_sample, codec_sample}),
