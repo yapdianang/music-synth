@@ -177,7 +177,7 @@
 	);
 	*/
 	
-    note_player note_player1(
+    note_player #(.INSTRUMENT(3'b010)) note_player1(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
@@ -191,7 +191,7 @@
         .new_sample_ready(note_sample_ready1)
     );
 	 
-	   note_player note_player2(
+	   note_player  #(.INSTRUMENT(3'b010)) note_player2(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
@@ -205,7 +205,7 @@
         .new_sample_ready(note_sample_ready2)
     );
 	 
-	   note_player note_player3(
+	   note_player  #(.INSTRUMENT(3'b010)) note_player3(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
