@@ -21,7 +21,7 @@ wire signed [15:0] sample_out;
 adsr dut_adsr(
    .clk(clk),
 	.reset(reset),
-	.sample_in(sample_in),
+	.pre_sample_in(sample_in),
 	.in_ready (in_ready),
 	.sample_out (sample_out)
 );
