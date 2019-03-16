@@ -59,6 +59,8 @@ wire signed [15:0] sample_in;
 reg [15:0] next_sample_count;
 reg [15:0] out_reg;
 wire switch_step;
+wire signed [15:0] shift_1, shift_2, shift_3, shift_4, shift_5, shift_6;
+//wire signed [15:0] pre_shift_1, pre_shift_2, pre_shift_3, pre_shift_4, pre_shift_5, pre_shift_6;
 
 dffre #(.WIDTH(16)) sample(
 	.clk(clk),
@@ -291,9 +293,9 @@ always @(*) begin
 	
 end
 
-//wire signed [15:0] delay_sample_out;
+wire signed [15:0] delay_sample_out;
 
-/*
+
 dffr #(.WIDTH(16)) timing_dffr (
 	.clk(clk),
 	.r(reset),
@@ -301,7 +303,7 @@ dffr #(.WIDTH(16)) timing_dffr (
 	.q(delay_sample_out)
 );
 
-*/
-assign sample_out = out_reg;
+
+assign sample_out = delay_sample_out;
 
 endmodule
