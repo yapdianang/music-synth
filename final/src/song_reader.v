@@ -7,7 +7,7 @@
 `define WAIT 2'b10
 `define CHECK_DONE 2'b11
 //`define WAITING_NOTE 2'b11
-`define LAST_NOTE 5'd31
+`define LAST_NOTE 7'd127
 //`define ALL_BUSY 3'b111
 
 module song_reader(
@@ -35,11 +35,11 @@ module song_reader(
 wire [15:0] song_rom_out;
 reg [1:0] next_state;
 wire [1:0] state;
-reg [4:0] next_note;
-wire [4:0] current_note;
+reg [6:0] next_note;
+wire [6:0] current_note;
 reg new_note_reg;
 reg song_done_reg;
-wire [6:0] address = {song, current_note};
+wire [8:0] address = {song, current_note};
 
 
 //wire np1_busy, np2_busy, np3_busy;
@@ -47,8 +47,8 @@ wire [2:0] busy_players = {np1_busy, np2_busy, np3_busy};
 
 song_rom local_song_rom (
 	 .clk(clk),
-    .addr(address),
-    .dout(song_rom_out) //12 bits
+    .addr(address),		// 9 bits
+    .dout(song_rom_out) //16 bits
 );
 
 wire delay_new_note, delay_song_done;
@@ -67,7 +67,7 @@ dffre #(.WIDTH(2)) state_dff(
     .q(state)
 );
 
-dffre #(.WIDTH(5)) note_dff(
+dffre #(.WIDTH(7)) note_dff(
     .clk(clk),
     .r(reset),
     //.en(play & note_done),

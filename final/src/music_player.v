@@ -25,7 +25,12 @@
 
     // Our final output sample to the codec. This needs to be synced to
     // new_frame.
-    output wire [15:0] sample_out
+    output wire [15:0] sample_out,
+	 input [3:0] instruments,
+	 input new_instrument,
+	 output [15:0] wave1_out, 
+	 output [15:0] wave2_out, 
+	 output [15:0] wave3_out
 );
     // The BEAT_COUNT is parameterized so you can reduce this in simulation.
     // If you reduce this to 100 your simulation will be 10x faster.
@@ -176,8 +181,35 @@
     .q(play_note3)
 	);
 	*/
+	 
+	wire [3:0] delayed_instr_1, delayed_instr_2, delayed_instr_3;
 	
-    note_player #(.INSTRUMENT(3'b101)) note_player1(
+	dffre #(.WIDTH(4)) hold_instr_dff1(
+    .clk(clk),
+    .r(reset),
+    .en(new_instrument),
+    .d(instruments), 
+    .q(delayed_instr_1)
+	);
+	
+	dffre #(.WIDTH(4)) hold_instr_dff2(
+    .clk(clk),
+    .r(reset),
+    .en(new_instrument),
+    .d(delayed_instr_1),
+    .q(delayed_instr_2)
+	);
+	
+	dffre #(.WIDTH(4)) hold_instr_dff3(
+    .clk(clk),
+    .r(reset),
+    .en(new_instrument),
+    .d(delayed_instr_2),
+    .q(delayed_instr_3)
+	);
+	
+	
+    note_player note_player1(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
@@ -188,10 +220,12 @@
         .beat(beat),
         .generate_next_sample(generate_next_sample),
         .sample_out(note_sample1),
-        .new_sample_ready(note_sample_ready1)
+        .new_sample_ready(note_sample_ready1),
+		 // .instrument(instruments)
+		 .instrument(delayed_instr_1)
     );
 	 
-	   note_player  #(.INSTRUMENT(3'b101)) note_player2(
+	   note_player  note_player2(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
@@ -202,10 +236,12 @@
         .beat(beat),
         .generate_next_sample(generate_next_sample),
         .sample_out(note_sample2),
-        .new_sample_ready(note_sample_ready2)
+        .new_sample_ready(note_sample_ready2),
+		  //.instrument(instruments)
+		  .instrument(delayed_instr_2)
     );
 	 
-	   note_player  #(.INSTRUMENT(3'b101)) note_player3(
+	   note_player note_player3(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
@@ -216,31 +252,60 @@
         .beat(beat),
         .generate_next_sample(generate_next_sample),
         .sample_out(note_sample3),
-        .new_sample_ready(note_sample_ready3)
+        .new_sample_ready(note_sample_ready3),
+		  //.instrument(instruments)
+		  .instrument(delayed_instr_3)
     );
 	 
-/*
-signed_add signed_add1(
-	//.inA(play_note1 ? (note_sample1) : 16'b0),
-	//.inB(play_note2 ? (note_sample2) : 16'b0),
-	//.inA(np1_busy ?  (note_sample1) : 16'b0),
-	//.inB(np2_busy ?  (note_sample2) : 16'b0),
-	.inA(note_sample1),
-	.inB(note_sample2),
-	.out(out1)
-);
+	 
+	 wire [15:0] delay_note_sample1, delay_note_sample2, delay_note_sample3;
+	 wire [15:0] delay_note_sample1two, delay_note_sample2two, delay_note_sample3two;
+	 wire [15:0] delay_note_sample1three, delay_note_sample2three, delay_note_sample3three;
+	 wire delay_note_sample_ready, delay_note_sample_ready2, delay_note_sample_ready3;
+// delay set 1	 
 
-signed_add signed_add2(
-	.inA(out1),
-	//.inB(play_note3 ? (note_sample3) : 16'b0),
-	.inB(note_sample3),
-	.out(out2)
-);
-*/
-   //assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample2)>>>2) + ($signed(note_sample3)>>>2) + ($signed(note_sample2)>>>2) + ($signed(note_sample2)>>>4) + ($signed(note_sample2)>>>6) + ($signed(note_sample3)>>>2) + ($signed(note_sample3)>>>4) + ($signed(note_sample3)>>>6); // TODO : handle overflow
+	 dffre #(.WIDTH(16)) delay_sample1_dff1(
+    .clk(clk),
+    .r(reset),
+	 .en(play),
+    .d(note_sample1),
+    .q(delay_note_sample1)
+	);
 	
-  	 assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample2)>>>2) + ($signed(note_sample3)>>>2);
-	 assign note_sample_ready = (note_sample_ready1 | note_sample_ready2 | note_sample_ready3);
+	dffre #(.WIDTH(16)) delay_sample2_dff1(
+    .clk(clk),
+    .r(reset),
+	 .en(play),
+    .d(note_sample2),
+    .q(delay_note_sample2)
+	);
+	
+	dffre #(.WIDTH(16)) delay_sample3_dff1(
+    .clk(clk),
+    .r(reset),
+	 .en(play),
+    .d(note_sample3),
+    .q(delay_note_sample3)
+	);
+	
+
+// flip flops to account for delayed notes
+	
+	dffre #(.WIDTH(1)) delay_note_sample_ready_dff1(
+    .clk(clk),
+    .r(reset),
+	 .en(play),
+    .d((note_sample_ready1 | note_sample_ready2 | note_sample_ready3)),
+    .q(delay_note_sample_ready)
+	);
+	
+	
+	 assign wave1_out = ($signed(delay_note_sample1)>>>2);
+	 assign wave2_out = ($signed(delay_note_sample2)>>>2);
+	 assign wave3_out = ($signed(delay_note_sample3)>>>2);
+	 
+  	 assign note_sample = wave1_out + wave2_out + wave3_out;
+	 assign note_sample_ready = delay_note_sample_ready;
 	 
 /*
 //  ****************************************************************************

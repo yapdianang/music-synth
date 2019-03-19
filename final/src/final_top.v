@@ -49,6 +49,10 @@ module final_top(
 
     // pmod Keypad
     inout [7:0] pmod_kypd,
+	 
+	 // rotary encoder
+	 input [7:4] JE,
+	 
 
     output [3:0] VGA_R,
     output [3:0] VGA_G,
@@ -80,6 +84,63 @@ module final_top(
 //      Button processor units
 //  ****************************************************************************
 //  
+
+	wire [3:0] Decode;
+	Decoder C0(
+			.clk(clk_100),
+			.Row(pmod_kypd[7:4]),
+			.Col(pmod_kypd[3:0]), 
+			.DecodeOut(Decode)
+	);
+	 
+	 wire [4:0] EncO;
+	Debouncer_rotary rd(
+			.clk(clk_100),
+			.Ain(JE[4]),
+			.Bin(JE[5]),
+			.Aout(AO),
+			.Bout(BO)
+	);
+	
+	Encoder_rotary er(
+			.clk(clk_100),
+			.A(AO),
+			.B(BO),
+			.BTN(JE[6]),
+			.EncOut(EncO),
+			.LED()
+	);
+	//assign leds_r = EncO[4:1];
+	// these are to make the signals from the keypad one pulse, where one_pulse_kypd is the number that goes high for one cycle
+	wire [3:0] one_pulse_kypd;
+	
+	edge_detector ed_0( 
+			.sig(Decode[0]),
+			.reset(reset),
+			.clk(clk_100),
+			.pe(one_pulse_kypd[0])
+	);
+	edge_detector ed_1(
+			.sig(Decode[1]),
+			.reset(reset),
+			.clk(clk_100),
+			.pe(one_pulse_kypd[1])
+	);
+	edge_detector ed_2(
+			.sig(Decode[2]),
+			.reset(reset),
+			.clk(clk_100),
+			.pe(one_pulse_kypd[2])
+	);
+	edge_detector ed_3(
+			.sig(Decode[3]),
+			.reset(reset),			
+			.clk(clk_100),
+			.pe(one_pulse_kypd[3])
+	);
+	
+	wire new_instrument = (one_pulse_kypd[0] | one_pulse_kypd[1] | one_pulse_kypd[2] | one_pulse_kypd[3]);
+	
     wire play;
     button_press_unit #(.WIDTH(BPU_WIDTH)) play_button_press_unit(
         .clk(clk_100),
@@ -102,7 +163,8 @@ module final_top(
 //  ****************************************************************************
 //       
     wire new_frame;
-    wire [15:0] codec_sample, flopped_sample;
+    wire [15:0] codec_sample, flopped_sample, wave1_out, wave2_out, wave3_out;
+	 wire [15:0] flopped_wave1, flopped_wave2, flopped_wave3;
     wire new_sample, flopped_new_sample;
     music_player #(.BEAT_COUNT(BEAT_COUNT)) music_player(
         .clk(clk_100),
@@ -111,7 +173,12 @@ module final_top(
         .next_button(next),
         .new_frame(new_frame), 
         .sample_out(codec_sample),
-        .new_sample_generated(new_sample)
+        .new_sample_generated(new_sample),
+		  .instruments(Decode),
+		  .new_instrument(new_instrument),
+		  .wave1_out(wave1_out),
+		  .wave2_out(wave2_out),
+		  .wave3_out(wave3_out)
     );
 	 
 	 
@@ -120,6 +187,22 @@ module final_top(
         .clk(clk_100),
         .d({new_sample, codec_sample}),
         .q({flopped_new_sample, flopped_sample})
+    );
+	 
+    dff #(.WIDTH(16)) sample_reg1 (
+        .clk(clk_100),
+        .d(wave1_out),
+        .q(flopped_wave1)
+    );
+    dff #(.WIDTH(16)) sample_reg2 (
+        .clk(clk_100),
+        .d(wave2_out),
+        .q(flopped_wave2)
+    );
+    dff #(.WIDTH(16)) sample_reg3 (
+        .clk(clk_100),
+        .d(wave3_out),
+        .q(flopped_wave3)
     );
 
 //   
@@ -133,8 +216,9 @@ module final_top(
 	wire [23:0] line_in_r =  0; 
 	
     // Output the sample onto the LEDs for the fun of it.
-    // assign leds_l = codec_sample[15:12];
-    assign leds_r = codec_sample[15:12];
+     assign leds_r = codec_sample[15:12];
+    //assign leds_r = Decode;
+	 
 
     adau1761_codec adau1761_codec(
         .clk_100(clk_100),
@@ -214,7 +298,7 @@ module final_top(
   //       .clk(clk_100),
   //       .d(valid_d),
   //       .q(valid));
-		  
+	wire [7:0] r_all, g_all, b_all, r_sub1, g_sub2, b_sub3;	  
     wave_display_top wd_top (
 		.clk (clk_100),
 		.reset (reset),
@@ -226,11 +310,63 @@ module final_top(
         .y(y[9:0]),
 		.valid(valid),
 		.vsync(hdmi_vsync),
-		.r(r_1),
-		.g(g_1),
-		.b(b_1) 
+		.r(r_all),
+		.g(g_all),
+		.b(b_all) 
+    );
+	 
+	  wave_display_top wd_top1 (
+		.clk (clk_100),
+		.reset (reset),
+		.new_sample (new_sample),
+		.sample (flopped_wave1),
+		// .x(x_q[10:0]),
+		// .y(y_q[9:0]),
+        .x(x[10:0]),
+        .y(y[9:0] - (EncO << 2)),
+		.valid(valid),
+		.vsync(hdmi_vsync),
+		.r(r_sub1),
+		.g(),
+		.b() 
+    );
+	 
+	  wave_display_top wd_top2 (
+		.clk (clk_100),
+		.reset (reset),
+		.new_sample (new_sample),
+		.sample (flopped_wave2),
+		// .x(x_q[10:0]),
+		// .y(y_q[9:0]),
+        .x(x[10:0]),
+        .y(y[9:0]- (EncO << 3)),
+		.valid(valid),
+		.vsync(hdmi_vsync),
+		.r(),
+		.g(g_sub2),
+		.b() 
     );
     
+	 wave_display_top wd_top3 (
+		.clk (clk_100),
+		.reset (reset),
+		.new_sample (new_sample),
+		.sample (flopped_wave3),
+		// .x(x_q[10:0]),
+		// .y(y_q[9:0]),
+        .x(x[10:0]),
+        .y(y[9:0] - (EncO << 4)),
+		.valid(valid),
+		.vsync(hdmi_vsync),
+		.r(),
+		.g(),
+		.b(b_sub3) 
+    );
+	 
+	 assign r_1 = r_sub1 + r_all;
+	 assign g_1 = g_sub2 + g_all;
+	 assign b_1 = b_sub3 + b_all;
+	 
     // dff #(.WIDTH (8)) r_flop (
     //     .clk(clk_100),
     //     .d(r_1),
