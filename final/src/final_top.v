@@ -49,6 +49,10 @@ module final_top(
 
     // pmod Keypad
     inout [7:0] pmod_kypd,
+	 
+	 // rotary encoder
+	 input [7:4] JE,
+	 
 
     output [3:0] VGA_R,
     output [3:0] VGA_G,
@@ -88,7 +92,25 @@ module final_top(
 			.Col(pmod_kypd[3:0]), 
 			.DecodeOut(Decode)
 	);
-
+	 
+	 wire [4:0] EncO;
+	Debouncer_rotary rd(
+			.clk(clk_100),
+			.Ain(JE[4]),
+			.Bin(JE[5]),
+			.Aout(AO),
+			.Bout(BO)
+	);
+	
+	Encoder_rotary er(
+			.clk(clk_100),
+			.A(AO),
+			.B(BO),
+			.BTN(JE[6]),
+			.EncOut(EncO),
+			.LED()
+	);
+	//assign leds_r = EncO[4:1];
 	// these are to make the signals from the keypad one pulse, where one_pulse_kypd is the number that goes high for one cycle
 	wire [3:0] one_pulse_kypd;
 	
@@ -194,9 +216,9 @@ module final_top(
 	wire [23:0] line_in_r =  0; 
 	
     // Output the sample onto the LEDs for the fun of it.
-    // assign leds_r = codec_sample[15:12];
+     assign leds_r = codec_sample[15:12];
     //assign leds_r = Decode;
-	 assign leds_r = one_pulse_kypd;
+	 
 
     adau1761_codec adau1761_codec(
         .clk_100(clk_100),
@@ -301,7 +323,7 @@ module final_top(
 		// .x(x_q[10:0]),
 		// .y(y_q[9:0]),
         .x(x[10:0]),
-        .y(y[9:0]),
+        .y(y[9:0] - (EncO << 4)),
 		.valid(valid),
 		.vsync(hdmi_vsync),
 		.r(r_sub1),
@@ -317,7 +339,7 @@ module final_top(
 		// .x(x_q[10:0]),
 		// .y(y_q[9:0]),
         .x(x[10:0]),
-        .y(y[9:0]),
+        .y(y[9:0]- (EncO << 5)),
 		.valid(valid),
 		.vsync(hdmi_vsync),
 		.r(),
@@ -333,7 +355,7 @@ module final_top(
 		// .x(x_q[10:0]),
 		// .y(y_q[9:0]),
         .x(x[10:0]),
-        .y(y[9:0]),
+        .y(y[9:0] - (EncO << 6)),
 		.valid(valid),
 		.vsync(hdmi_vsync),
 		.r(),
