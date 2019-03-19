@@ -38,15 +38,16 @@ dffre #(.WIDTH(SIGNAL_WIDTH)) counts_ff(
 		.q (curr_count)
 );
 
-dffr #(.WIDTH(1)) toggle_ff(
+dffre #(.WIDTH(1)) toggle_ff(
 	.clk(clk),
 	.r(reset),
+	.en(count_en),
 	.d(next_toggle),
 	.q(curr_toggle)
 );
 
-assign next_toggle = ((curr_toggle == 1'b0) & curr_count == COUNT_TO - 16'd1) ? 1'b1 : 1'b0;
-assign next_count = (curr_count == COUNT_TO) ? {SIGNAL_WIDTH{1'b0}} : curr_count + 16'd1;
+assign next_toggle = ((curr_toggle == 1'b0) & curr_count == COUNT_TO - 1) ? 1'b1 : 1'b0;
+assign next_count = (curr_count == COUNT_TO - 1) ? {SIGNAL_WIDTH{1'b0}} : curr_count + 16'd1;
  
 assign out = reset ? 1'b0 : curr_toggle;
 

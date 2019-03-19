@@ -46,8 +46,10 @@ module adsr(
 	input reset,
 	input signed [15:0] pre_sample_in,
 	input in_ready,
-	output signed [15:0] sample_out
+	output signed [15:0] sample_out,
+	output out_ready
     );	
+	 
 wire [1:0] curr_state;
 reg [1:0] next_state;
 
@@ -58,9 +60,20 @@ wire [15:0] curr_sample_count;
 wire signed [15:0] sample_in;
 reg [15:0] next_sample_count;
 reg [15:0] out_reg;
-wire switch_step;
+wire switch_step, flopped_ready;
 wire signed [15:0] shift_1, shift_2, shift_3, shift_4, shift_5, shift_6;
 //wire signed [15:0] pre_shift_1, pre_shift_2, pre_shift_3, pre_shift_4, pre_shift_5, pre_shift_6;
+
+
+dffre #(.WIDTH(1)) ready_ff(
+	.clk(clk),
+	.r(reset),
+	.en(in_ready),
+	.d(in_ready),
+	.q(flopped_ready)
+);
+
+assign out_ready = flopped_ready;
 
 dffre #(.WIDTH(16)) sample(
 	.clk(clk),
@@ -139,6 +152,15 @@ dffre #(.WIDTH(4)) step_ff(
 	.q(step)
 );
 
+wire flopped_switch;
+
+dffre # (.WIDTH(1)) switch_ff(
+	.clk(clk),
+	.r(reset),
+	.en(in_ready),
+	.d(switch_step),
+	.q(flopped_switch)
+);
 dffre #(.WIDTH(16)) sample_count_ff(
 	.clk(clk),
 	.r(reset),
@@ -162,32 +184,32 @@ dffr # (.WIDTH(16)) sample_ff(
 	.q(sample_in)
 );
 */
-assign next_step = (step == `S9) ? 4'd0 : step + 4'd1;
+assign next_step = (step == `S9) ? `S0 : step + 4'd1;
 
 always @(*) begin
 	case (curr_state)
 		`ATTACK: begin
-			next_state = (curr_sample_count == `t_a) ? `DECAY : `ATTACK;
-			next_sample_count = (curr_sample_count == `t_a) ? 16'd0 : curr_sample_count + 16'd1;
+			next_state = (curr_sample_count == `t_a - 16'd1) ? `DECAY : `ATTACK;
+			next_sample_count = (curr_sample_count == `t_a - 16'd1) ? 16'd0 : curr_sample_count + 16'd1;
 			
 			end
 		`DECAY: begin
-			next_state = (curr_sample_count == `t_d) ? `SUSTAIN : `DECAY;
-			next_sample_count = (curr_sample_count == `t_d) ? 16'd0 : curr_sample_count + 16'd1;
+			next_state = ((curr_sample_count == `t_d - 16'd1)) ? `SUSTAIN : `DECAY;
+			next_sample_count = (curr_sample_count == `t_d- 16'd1) ? 16'd0 : curr_sample_count + 16'd1;
 
 			end
 		`SUSTAIN: begin
-			next_state = (curr_sample_count == `t_s) ? `RELEASE : `SUSTAIN;
-			next_sample_count = (curr_sample_count == `t_s) ? 16'd0 : curr_sample_count + 16'd1;
+			next_state = (curr_sample_count == `t_s - 16'd1) ? `RELEASE : `SUSTAIN;
+			next_sample_count = (curr_sample_count == `t_s- 16'd1) ? 16'd0 : curr_sample_count + 16'd1;
 
 			end
 		`RELEASE: begin
-			next_state = (curr_sample_count == `t_r) ? `ATTACK : `RELEASE;
-			next_sample_count = (curr_sample_count == `t_r) ? 16'd0 : curr_sample_count + 16'd1;
+			next_state = (curr_sample_count == `t_r - 16'd1) ? `ATTACK : `RELEASE;
+			next_sample_count = (curr_sample_count == `t_r- 16'd1) ? 16'd0 : curr_sample_count + 16'd1;
 
 			end
 		default: begin
-			next_state = `ATTACK;
+			next_state = `ATTACK; 
 			next_sample_count = 16'd0;
 		end
 	endcase
@@ -295,15 +317,15 @@ end
 
 wire signed [15:0] delay_sample_out;
 
-
+/*
 dffr #(.WIDTH(16)) timing_dffr (
 	.clk(clk),
 	.r(reset),
 	.d(out_reg),
 	.q(delay_sample_out)
 );
+*/
 
-
-assign sample_out = delay_sample_out;
+assign sample_out = out_reg;
 
 endmodule

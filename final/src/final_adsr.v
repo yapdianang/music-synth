@@ -103,23 +103,24 @@ module final_adsr(
 //       
     wire new_frame;
     wire [15:0] codec_sample, mp_codec_sample, flopped_sample;
-    wire new_sample, flopped_new_sample;
-    music_player #(.BEAT_COUNT(BEAT_COUNT)) music_player(
+    wire new_sample, mp_new_sample, flopped_new_sample;
+    music_player_old #(.BEAT_COUNT(BEAT_COUNT)) music_player(
         .clk(clk_100),
         .reset(reset),
         .play_button(play),
         .next_button(next),
         .new_frame(new_frame), 
         .sample_out(mp_codec_sample),
-        .new_sample_generated(new_sample)
+        .new_sample_generated(mp_new_sample)
     );
 
 	 adsr adsr_mod(
 		.clk (clk_100),
 		.reset (reset),
 		.pre_sample_in (mp_codec_sample),
-		.in_ready(new_sample),
-		.sample_out (codec_sample)
+		.in_ready(mp_new_sample),
+		.sample_out (codec_sample),
+		.out_ready(new_sample)
 ); 
     dff #(.WIDTH(17)) sample_reg (
         .clk(clk_100),
