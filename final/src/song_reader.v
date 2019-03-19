@@ -47,8 +47,8 @@ wire [2:0] busy_players = {np1_busy, np2_busy, np3_busy};
 
 song_rom local_song_rom (
 	 .clk(clk),
-    .addr(address),
-    .dout(song_rom_out) //12 bits
+    .addr(address),		// 9 bits
+    .dout(song_rom_out) //16 bits
 );
 
 wire delay_new_note, delay_song_done;

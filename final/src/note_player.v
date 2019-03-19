@@ -130,51 +130,58 @@ sine_reader seventh_harmonic(
 wire [15:0] delay_out_1, delay_out_2, delay_out_3, delay_out_4, delay_out_5, delay_out_6, delay_out_7;
 wire delay_rdy_1, delay_rdy_2, delay_rdy_3, delay_rdy_4, delay_rdy_5, delay_rdy_6, delay_rdy_7;
 
-dffr #(.WIDTH(17)) delay_out_and_ready1(
+dffre #(.WIDTH(17)) delay_out_and_ready1(
     .clk(clk),
     .r(reset),
+	 .en(play_enable),
     .d({out_1, rdy_1}),
     .q({delay_out_1, delay_rdy_1})
 	);
 	
-	dffr #(.WIDTH(17)) delay_out_and_ready2(
+	dffre #(.WIDTH(17)) delay_out_and_ready2(
     .clk(clk),
     .r(reset),
+	 .en(play_enable),
     .d({out_2, rdy_2}),
     .q({delay_out_2, delay_rdy_2})
 	);
 	
-	dffr #(.WIDTH(17)) delay_out_and_ready3(
+	dffre #(.WIDTH(17)) delay_out_and_ready3(
     .clk(clk),
     .r(reset),
+	 .en(play_enable),
     .d({out_3, rdy_3}),
     .q({delay_out_3, delay_rdy_3})
 	);	
 	
-	dffr #(.WIDTH(17)) delay_out_and_ready4(
+	dffre #(.WIDTH(17)) delay_out_and_ready4(
     .clk(clk),
     .r(reset),
+	 .en(play_enable),
     .d({out_4, rdy_4}),
     .q({delay_out_4, delay_rdy_4})
 	);	
 	
-	dffr #(.WIDTH(17)) delay_out_and_ready5(
+	dffre #(.WIDTH(17)) delay_out_and_ready5(
     .clk(clk),
     .r(reset),
+	 .en(play_enable),
     .d({out_5, rdy_5}),
     .q({delay_out_5, delay_rdy_5})
 	);	
 
-dffr #(.WIDTH(17)) delay_out_and_ready6(
+dffre #(.WIDTH(17)) delay_out_and_ready6(
     .clk(clk),
     .r(reset),
+	 .en(play_enable),
     .d({out_6, rdy_6}),
     .q({delay_out_6, delay_rdy_6})
 	);
 
-dffr #(.WIDTH(17)) delay_out_and_ready7(
+dffre #(.WIDTH(17)) delay_out_and_ready7(
     .clk(clk),
     .r(reset),
+	 .en(play_enable),
     .d({out_7, rdy_7}),
     .q({delay_out_7, delay_rdy_7})
 	);	

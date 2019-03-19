@@ -264,95 +264,41 @@
 	 wire delay_note_sample_ready, delay_note_sample_ready2, delay_note_sample_ready3;
 // delay set 1	 
 
-	 dffr #(.WIDTH(16)) delay_sample1_dff1(
+	 dffre #(.WIDTH(16)) delay_sample1_dff1(
     .clk(clk),
     .r(reset),
+	 .en(play),
     .d(note_sample1),
     .q(delay_note_sample1)
 	);
 	
-	dffr #(.WIDTH(16)) delay_sample2_dff1(
+	dffre #(.WIDTH(16)) delay_sample2_dff1(
     .clk(clk),
     .r(reset),
+	 .en(play),
     .d(note_sample2),
     .q(delay_note_sample2)
 	);
 	
-	dffr #(.WIDTH(16)) delay_sample3_dff1(
+	dffre #(.WIDTH(16)) delay_sample3_dff1(
     .clk(clk),
     .r(reset),
+	 .en(play),
     .d(note_sample3),
     .q(delay_note_sample3)
 	);
 	
-// delay set 2
-dffr #(.WIDTH(16)) delay_sample1_dff2(
-    .clk(clk),
-    .r(reset),
-    .d(delay_note_sample1),
-    .q(delay_note_sample1two)
-	);
-	
-	dffr #(.WIDTH(16)) delay_sample2_dff2(
-    .clk(clk),
-    .r(reset),
-    .d(delay_note_sample2),
-    .q(delay_note_sample2two)
-	);
-	
-	dffr #(.WIDTH(16)) delay_sample3_dff2(
-    .clk(clk),
-    .r(reset),
-    .d(delay_note_sample3),
-    .q(delay_note_sample3two)
-	);
-
-
-// delay set 3
-dffr #(.WIDTH(16)) delay_sample1_dff3(
-    .clk(clk),
-    .r(reset),
-    .d(delay_note_sample1two),
-    .q(delay_note_sample1three)
-	);
-	
-	dffr #(.WIDTH(16)) delay_sample2_dff3(
-    .clk(clk),
-    .r(reset),
-    .d(delay_note_sample2two),
-    .q(delay_note_sample2three)
-	);
-	
-	dffr #(.WIDTH(16)) delay_sample3_dff3(
-    .clk(clk),
-    .r(reset),
-    .d(delay_note_sample3two),
-    .q(delay_note_sample3three)
-	);
 
 // flip flops to account for delayed notes
 	
-	dffr #(.WIDTH(1)) delay_note_sample_ready_dff1(
+	dffre #(.WIDTH(1)) delay_note_sample_ready_dff1(
     .clk(clk),
     .r(reset),
+	 .en(play),
     .d((note_sample_ready1 | note_sample_ready2 | note_sample_ready3)),
     .q(delay_note_sample_ready)
 	);
 	
-	
-	dffr #(.WIDTH(1)) delay_note_sample_ready_dff2(
-    .clk(clk),
-    .r(reset),
-    .d(delay_note_sample_ready),
-    .q(delay_note_sample_ready2)
-	);
-	
-	dffr #(.WIDTH(1)) delay_note_sample_ready_dff3(
-    .clk(clk),
-    .r(reset),
-    .d(delay_note_sample_ready2),
-    .q(delay_note_sample_ready3)
-	);
 	
 	 assign wave1_out = ($signed(delay_note_sample1)>>>2);
 	 assign wave2_out = ($signed(delay_note_sample2)>>>2);
