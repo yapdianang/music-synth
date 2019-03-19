@@ -61,12 +61,12 @@ wire stop_button;
 // using an enable so that we only move to the next state when we are playing the song
 dffre #(.WIDTH(2)) state_dff(
     .clk(clk),
-    .r(reset),
+    .r(reset), 
     .en(play),
     .d(next_state),
     .q(state)
-);
-
+); 
+ 
 dffre #(.WIDTH(7)) note_dff(
     .clk(clk),
     .r(reset),

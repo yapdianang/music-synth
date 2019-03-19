@@ -56,7 +56,7 @@ module final_top(
 
     output [3:0] VGA_R,
     output [3:0] VGA_G,
-    output [3:0] VGA_B,
+    output [3:0] VGA_B, 
     output VGA_HS,
     output VGA_VS
 );  
@@ -137,9 +137,11 @@ module final_top(
 			.reset(reset),			
 			.clk(clk_100),
 			.pe(one_pulse_kypd[3])
-	);
+	); 
 	
 	wire new_instrument = (one_pulse_kypd[0] | one_pulse_kypd[1] | one_pulse_kypd[2] | one_pulse_kypd[3]);
+	wire new_echo_up = (one_pulse_kypd == 4'b1010);
+	wire new_echo_down = (one_pulse_kypd == 4'b1011);
 	
     wire play;
     button_press_unit #(.WIDTH(BPU_WIDTH)) play_button_press_unit(
