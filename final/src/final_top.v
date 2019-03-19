@@ -141,7 +141,8 @@ module final_top(
 //  ****************************************************************************
 //       
     wire new_frame;
-    wire [15:0] codec_sample, flopped_sample;
+    wire [15:0] codec_sample, flopped_sample, wave1_out, wave2_out, wave3_out;
+	 wire [15:0] flopped_wave1, flopped_wave2, flopped_wave3;
     wire new_sample, flopped_new_sample;
     music_player #(.BEAT_COUNT(BEAT_COUNT)) music_player(
         .clk(clk_100),
@@ -152,7 +153,10 @@ module final_top(
         .sample_out(codec_sample),
         .new_sample_generated(new_sample),
 		  .instruments(Decode),
-		  .new_instrument(new_instrument)
+		  .new_instrument(new_instrument),
+		  .wave1_out(wave1_out),
+		  .wave2_out(wave2_out),
+		  .wave3_out(wave3_out)
     );
 	 
 	 
@@ -161,6 +165,22 @@ module final_top(
         .clk(clk_100),
         .d({new_sample, codec_sample}),
         .q({flopped_new_sample, flopped_sample})
+    );
+	 
+    dff #(.WIDTH(16)) sample_reg1 (
+        .clk(clk_100),
+        .d(wave1_out),
+        .q(flopped_wave1)
+    );
+    dff #(.WIDTH(16)) sample_reg2 (
+        .clk(clk_100),
+        .d(wave2_out),
+        .q(flopped_wave2)
+    );
+    dff #(.WIDTH(16)) sample_reg3 (
+        .clk(clk_100),
+        .d(wave3_out),
+        .q(flopped_wave3)
     );
 
 //   
@@ -256,7 +276,7 @@ module final_top(
   //       .clk(clk_100),
   //       .d(valid_d),
   //       .q(valid));
-		  
+	wire [7:0] r_all, g_all, b_all, r_sub1, g_sub2, b_sub3;	  
     wave_display_top wd_top (
 		.clk (clk_100),
 		.reset (reset),
@@ -268,11 +288,63 @@ module final_top(
         .y(y[9:0]),
 		.valid(valid),
 		.vsync(hdmi_vsync),
-		.r(r_1),
-		.g(g_1),
-		.b(b_1) 
+		.r(r_all),
+		.g(g_all),
+		.b(b_all) 
+    );
+	 
+	  wave_display_top wd_top1 (
+		.clk (clk_100),
+		.reset (reset),
+		.new_sample (new_sample),
+		.sample (flopped_wave1),
+		// .x(x_q[10:0]),
+		// .y(y_q[9:0]),
+        .x(x[10:0]),
+        .y(y[9:0]),
+		.valid(valid),
+		.vsync(hdmi_vsync),
+		.r(r_sub1),
+		.g(),
+		.b() 
+    );
+	 
+	  wave_display_top wd_top2 (
+		.clk (clk_100),
+		.reset (reset),
+		.new_sample (new_sample),
+		.sample (flopped_wave2),
+		// .x(x_q[10:0]),
+		// .y(y_q[9:0]),
+        .x(x[10:0]),
+        .y(y[9:0]),
+		.valid(valid),
+		.vsync(hdmi_vsync),
+		.r(),
+		.g(g_sub2),
+		.b() 
     );
     
+	 wave_display_top wd_top3 (
+		.clk (clk_100),
+		.reset (reset),
+		.new_sample (new_sample),
+		.sample (flopped_wave3),
+		// .x(x_q[10:0]),
+		// .y(y_q[9:0]),
+        .x(x[10:0]),
+        .y(y[9:0]),
+		.valid(valid),
+		.vsync(hdmi_vsync),
+		.r(),
+		.g(),
+		.b(b_sub3) 
+    );
+	 
+	 assign r_1 = r_sub1 + r_all;
+	 assign g_1 = g_sub2 + g_all;
+	 assign b_1 = b_sub3 + b_all;
+	 
     // dff #(.WIDTH (8)) r_flop (
     //     .clk(clk_100),
     //     .d(r_1),
