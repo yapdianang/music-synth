@@ -30,6 +30,21 @@ dffre #(.WIDTH(SIGNAL_WIDTH)) counts_ff(
 );
 */
 
+wire has_switched, next_has_switched, delayed_has_switched;
+dffr #(.WIDTH(1)) has_switched_ff(
+	.clk(clk),
+	.r(reset),
+	.d(next_has_switched),
+	.q(has_switched)
+);
+dffr #(.WIDTH(1)) has_switched_ff_2(
+	.clk(clk),
+	.r(reset),
+	.d(has_switched),
+	.q(delayed_has_switched)
+);
+
+assign next_has_switched = (curr_count == 16'd0);
 dffre #(.WIDTH(SIGNAL_WIDTH)) counts_ff(
 		.clk(clk),
 		.r(reset),
@@ -38,18 +53,26 @@ dffre #(.WIDTH(SIGNAL_WIDTH)) counts_ff(
 		.q (curr_count)
 );
 
-dffre #(.WIDTH(1)) toggle_ff(
+dffr #(.WIDTH(1)) toggle_ff(
 	.clk(clk),
 	.r(reset),
-	.en(count_en),
 	.d(next_toggle),
 	.q(curr_toggle)
 );
 
-assign next_toggle = ((curr_toggle == 1'b0) & curr_count == COUNT_TO - 1) ? 1'b1 : 1'b0;
-assign next_count = (curr_count == COUNT_TO - 1) ? {SIGNAL_WIDTH{1'b0}} : curr_count + 16'd1;
+wire flopped_count_en;
+dffr #(.WIDTH(1)) count_en_ff(
+	.clk(clk),
+	.r(reset),
+	.d(count_en),
+	.q(flopped_count_en)
+);
+
+assign next_toggle = ((curr_count == 16'd0) & (curr_toggle == 1'b0)) ? count_en : 1'b0;
+assign next_count = (curr_count == COUNT_TO - 16'd1) ? {SIGNAL_WIDTH{1'b0}} : curr_count + 16'd1;
  
-assign out = reset ? 1'b0 : curr_toggle;
+//wire toggle_temp = (curr_count == 16'd0) & count_en ? 1'b1:1'b0; 
+assign out = reset ? 1'b0 : next_toggle;
 
 endmodule
 

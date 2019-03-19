@@ -65,10 +65,9 @@ wire signed [15:0] shift_1, shift_2, shift_3, shift_4, shift_5, shift_6;
 //wire signed [15:0] pre_shift_1, pre_shift_2, pre_shift_3, pre_shift_4, pre_shift_5, pre_shift_6;
 
 
-dffre #(.WIDTH(1)) ready_ff(
+dffr #(.WIDTH(1)) ready_ff(
 	.clk(clk),
 	.r(reset),
-	.en(in_ready),
 	.d(in_ready),
 	.q(flopped_ready)
 );

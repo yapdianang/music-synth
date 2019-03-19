@@ -35,12 +35,13 @@ initial begin
  end
 	 
 initial begin
+	  #5
 	  forever begin
 	  //@(posedge clk);
 	  #50
 	  in_ready = 1'b1;
 	  sample_in = 16'b0111111111111111;
-	  #10
+	  #10	  
 	  in_ready = 1'b0;
 	  //@(posedge clk);
 	  #40
