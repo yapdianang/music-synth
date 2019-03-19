@@ -80,7 +80,7 @@ module final_top(
 //      Button processor units
 //  ****************************************************************************
 //  
-	
+
 	wire [3:0] Decode;
 	Decoder C0(
 			.clk(clk_100),
@@ -94,22 +94,26 @@ module final_top(
 	
 	edge_detector ed_0( 
 			.sig(Decode[0]),
-			.clk(clk),
+			.reset(reset),
+			.clk(clk_100),
 			.pe(one_pulse_kypd[0])
 	);
 	edge_detector ed_1(
 			.sig(Decode[1]),
-			.clk(clk),
+			.reset(reset),
+			.clk(clk_100),
 			.pe(one_pulse_kypd[1])
 	);
 	edge_detector ed_2(
 			.sig(Decode[2]),
-			.clk(clk),
+			.reset(reset),
+			.clk(clk_100),
 			.pe(one_pulse_kypd[2])
 	);
 	edge_detector ed_3(
-			.sig(Decode[3]), 
-			.clk(clk),
+			.sig(Decode[3]),
+			.reset(reset),			
+			.clk(clk_100),
 			.pe(one_pulse_kypd[3])
 	);
 	
@@ -171,7 +175,8 @@ module final_top(
 	
     // Output the sample onto the LEDs for the fun of it.
     // assign leds_r = codec_sample[15:12];
-    assign leds_r = Decode;
+    //assign leds_r = Decode;
+	 assign leds_r = one_pulse_kypd;
 
     adau1761_codec adau1761_codec(
         .clk_100(clk_100),

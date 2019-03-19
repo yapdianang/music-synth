@@ -1,7 +1,7 @@
 `define NORMAL 4'b0000
 `define TRIANGLE1 4'b0001
 `define SQUARE 4'b0010 
-`define TRIANGLE2 4'b0011
+`define MYSTERY 4'b0011
 `define VIOLIN 4'b0100
 `define CLARINET 4'b0101
 `define TRUMPET 4'b0110
@@ -126,7 +126,7 @@ sine_reader seventh_harmonic(
 	.sample(out_7)
 );
 
-reg [16:0] sample_out_reg;
+reg [15:0] sample_out_reg;
 
 always @(*) begin
 	case (instrument)
@@ -134,13 +134,13 @@ always @(*) begin
 			sample_out_reg =  ($signed(out_1) >>> 1);
 		end
 		`TRIANGLE1: begin
-			sample_out_reg = (($signed(out_1) >>> 1) + ($signed(out_2) >>> 2) + ($signed(out_3) >>> 3) + ($signed(out_4) >>> 4) + ($signed(out_5) >>> 25) + ($signed(out_6) >>> 6) + ($signed(out_7) >>> 7) );
+			sample_out_reg = (($signed(out_1) >>> 1) + ($signed(out_2) >>> 2) + ($signed(out_3) >>> 3) + ($signed(out_4) >>> 4) + ($signed(out_5) >>> 5) + ($signed(out_6) >>> 6) + ($signed(out_7) >>> 7) );
 		end
 		`SQUARE: begin
-			sample_out_reg =  ((($signed(out_1) >>> 2) + ($signed(out_1) >>> 4)) + (($signed(out_3) >>> 4) + ($signed(out_3) >>> 5))  + (($signed(out_5) >>> 4) + ($signed(out_5) >>> 9)) + (($signed(out_7) >>> 5) + ($signed(out_7) >>> 6)));
+			sample_out_reg =  ((($signed(out_1) >>> 2) + ($signed(out_1) >>> 4)) + (($signed(out_3) >>> 4) + ($signed(out_3) >>> 5))  + ($signed(out_5) >>> 4) + (($signed(out_7) >>> 5)));
 		end
-		`TRIANGLE2: begin
-			sample_out_reg =  (($signed(out_1) >>> 1) + ($signed(out_2) >>> 2) + (($signed(out_3) >>> 3) + ($signed(out_3) >>> 5)) + ($signed(out_4) >>> 3) + (($signed(out_5) >>> 4) + ($signed(out_5) >>> 5)) + (($signed(out_6) >>> 4) + ($signed(out_6) >>> 6) + ($signed(out_6) >>> 7)) + (($signed(out_7) >>> 4) + ($signed(out_7) >>> 6)));
+		`MYSTERY: begin
+			sample_out_reg =  (($signed(out_1) >>> 2) + ($signed(out_2) >>> 2) + ($signed(out_4) >>> 2) + ($signed(out_6) >>> 2));
 		end
 		`VIOLIN: begin
 			sample_out_reg =  (($signed(out_1) >>> 1) + ($signed(out_2) >>> 3) + ($signed(out_3) >>> 5) + ($signed(out_4) >>> 7) + ($signed(out_5) >>> 7) + ($signed(out_6) >>> 8) + ($signed(out_7) >>> 9));
