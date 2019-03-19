@@ -1,14 +1,14 @@
-`define NORMAL 3'b000
-`define TRIANGLE1 3'b001
-`define SQUARE 3'b010
-`define TRIANGLE2 3'b011
-`define VIOLIN 3'b100
-`define CLARINET 3'b101
-`define TRUMPET 3'b110
-`define CUSTOM 3'b111
+`define NORMAL 4'b0000
+`define TRIANGLE1 4'b0001
+`define SQUARE 4'b0010 
+`define TRIANGLE2 4'b0011
+`define VIOLIN 4'b0100
+`define CLARINET 4'b0101
+`define TRUMPET 4'b0110
+`define CUSTOM 4'b0111
 
 
-module  note_player #(parameter INSTRUMENT = 3'b000)(
+module  note_player (
     input clk,
     input reset,
     input play_enable,  // When high we play, when low we don't.
@@ -19,7 +19,8 @@ module  note_player #(parameter INSTRUMENT = 3'b000)(
     input beat,  // This is our 1/48th second beat
     input generate_next_sample,  // Tells us when the codec wants a new sample
     output [15:0] sample_out,  // Our sample output
-    output new_sample_ready  // Tells the codec when we've got a sample
+    output new_sample_ready,  // Tells the codec when we've got a sample
+	 input [3:0] instrument
 );
 
 wire [19:0] fr_out, step_size;
@@ -29,9 +30,6 @@ wire delay_load_new_note, play_note;
 wire rdy_1, rdy_2, rdy_3, rdy_4, rdy_5, rdy_6, rdy_7;
 wire [15:0] out_1, out_2, out_3, out_4, out_5, out_6, out_7;
 assign step_size = (play_enable && play_note) ? fr_out:20'b0;
-
-
-
 
 dffre #(.WIDTH(1)) load_new_dff(
     .clk(clk),
@@ -131,7 +129,7 @@ sine_reader seventh_harmonic(
 reg [16:0] sample_out_reg;
 
 always @(*) begin
-	case (INSTRUMENT)
+	case (instrument)
 		`NORMAL: begin
 			sample_out_reg =  ($signed(out_1) >>> 1);
 		end
@@ -156,7 +154,9 @@ always @(*) begin
 		`CUSTOM: begin
 			sample_out_reg =  (($signed(out_1) >>> 3) + ($signed(out_2) >>> 3) + ($signed(out_3) >>> 3) + ($signed(out_4) >>> 5) + ($signed(out_5) >>> 5) + ($signed(out_6) >>> 5) + ($signed(out_7) >>> 4));
 		end
-
+		default: begin
+			sample_out_reg = out_1;
+		end
 	endcase
 end
 

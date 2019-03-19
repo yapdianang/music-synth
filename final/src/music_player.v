@@ -25,7 +25,9 @@
 
     // Our final output sample to the codec. This needs to be synced to
     // new_frame.
-    output wire [15:0] sample_out
+    output wire [15:0] sample_out,
+	 input [3:0] instruments,
+	 input new_instrument
 );
     // The BEAT_COUNT is parameterized so you can reduce this in simulation.
     // If you reduce this to 100 your simulation will be 10x faster.
@@ -176,8 +178,35 @@
     .q(play_note3)
 	);
 	*/
+	 
+	wire [3:0] delayed_instr_1, delayed_instr_2, delayed_instr_3;
 	
-    note_player #(.INSTRUMENT(3'b101)) note_player1(
+	dffre #(.WIDTH(4)) hold_instr_dff1(
+    .clk(clk),
+    .r(reset),
+    .en(new_instrument),
+    .d(instruments), 
+    .q(delayed_instr_1)
+	);
+	
+	dffre #(.WIDTH(4)) hold_instr_dff2(
+    .clk(clk),
+    .r(reset),
+    .en(new_instrument),
+    .d(delayed_instr_1),
+    .q(delayed_instr_2)
+	);
+	
+	dffre #(.WIDTH(4)) hold_instr_dff3(
+    .clk(clk),
+    .r(reset),
+    .en(new_instrument),
+    .d(delayed_instr_2),
+    .q(delayed_instr_3)
+	);
+	
+	
+    note_player note_player1(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
@@ -188,10 +217,12 @@
         .beat(beat),
         .generate_next_sample(generate_next_sample),
         .sample_out(note_sample1),
-        .new_sample_ready(note_sample_ready1)
+        .new_sample_ready(note_sample_ready1),
+		 // .instrument(instruments)
+		 .instrument(delayed_instr_1)
     );
 	 
-	   note_player  #(.INSTRUMENT(3'b101)) note_player2(
+	   note_player  note_player2(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
@@ -202,10 +233,12 @@
         .beat(beat),
         .generate_next_sample(generate_next_sample),
         .sample_out(note_sample2),
-        .new_sample_ready(note_sample_ready2)
+        .new_sample_ready(note_sample_ready2),
+		  //.instrument(instruments)
+		  .instrument(delayed_instr_2)
     );
 	 
-	   note_player  #(.INSTRUMENT(3'b101)) note_player3(
+	   note_player note_player3(
         .clk(clk),
         .reset(reset),
         .play_enable(play),
@@ -216,7 +249,9 @@
         .beat(beat),
         .generate_next_sample(generate_next_sample),
         .sample_out(note_sample3),
-        .new_sample_ready(note_sample_ready3)
+        .new_sample_ready(note_sample_ready3),
+		  //.instrument(instruments)
+		  .instrument(delayed_instr_3)
     );
 	 
 /*
@@ -238,7 +273,7 @@ signed_add signed_add2(
 );
 */
    //assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample2)>>>2) + ($signed(note_sample3)>>>2) + ($signed(note_sample2)>>>2) + ($signed(note_sample2)>>>4) + ($signed(note_sample2)>>>6) + ($signed(note_sample3)>>>2) + ($signed(note_sample3)>>>4) + ($signed(note_sample3)>>>6); // TODO : handle overflow
-	
+	//assign note_sample = note_sample1;
   	 assign note_sample = ($signed(note_sample1)>>>2) + ($signed(note_sample2)>>>2) + ($signed(note_sample3)>>>2);
 	 assign note_sample_ready = (note_sample_ready1 | note_sample_ready2 | note_sample_ready3);
 	 

@@ -80,6 +80,41 @@ module final_top(
 //      Button processor units
 //  ****************************************************************************
 //  
+	
+	wire [3:0] Decode;
+	Decoder C0(
+			.clk(clk_100),
+			.Row(pmod_kypd[7:4]),
+			.Col(pmod_kypd[3:0]), 
+			.DecodeOut(Decode)
+	);
+
+	// these are to make the signals from the keypad one pulse, where one_pulse_kypd is the number that goes high for one cycle
+	wire [3:0] one_pulse_kypd;
+	
+	edge_detector ed_0( 
+			.sig(Decode[0]),
+			.clk(clk),
+			.pe(one_pulse_kypd[0])
+	);
+	edge_detector ed_1(
+			.sig(Decode[1]),
+			.clk(clk),
+			.pe(one_pulse_kypd[1])
+	);
+	edge_detector ed_2(
+			.sig(Decode[2]),
+			.clk(clk),
+			.pe(one_pulse_kypd[2])
+	);
+	edge_detector ed_3(
+			.sig(Decode[3]), 
+			.clk(clk),
+			.pe(one_pulse_kypd[3])
+	);
+	
+	wire new_instrument = (one_pulse_kypd[0] | one_pulse_kypd[1] | one_pulse_kypd[2] | one_pulse_kypd[3]);
+	
     wire play;
     button_press_unit #(.WIDTH(BPU_WIDTH)) play_button_press_unit(
         .clk(clk_100),
@@ -111,7 +146,9 @@ module final_top(
         .next_button(next),
         .new_frame(new_frame), 
         .sample_out(codec_sample),
-        .new_sample_generated(new_sample)
+        .new_sample_generated(new_sample),
+		  .instruments(Decode),
+		  .new_instrument(new_instrument)
     );
 	 
 	 
@@ -133,8 +170,8 @@ module final_top(
 	wire [23:0] line_in_r =  0; 
 	
     // Output the sample onto the LEDs for the fun of it.
-    // assign leds_l = codec_sample[15:12];
-    assign leds_r = codec_sample[15:12];
+    // assign leds_r = codec_sample[15:12];
+    assign leds_r = Decode;
 
     adau1761_codec adau1761_codec(
         .clk_100(clk_100),
