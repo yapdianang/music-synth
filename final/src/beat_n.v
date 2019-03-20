@@ -68,7 +68,7 @@ dffr #(.WIDTH(1)) count_en_ff(
 	.q(flopped_count_en)
 );
 
-assign next_toggle = ((curr_count == 16'd0) & (curr_toggle == 1'b0)) ? count_en : 1'b0;
+assign next_toggle = ((curr_count == 16'd0) & (curr_toggle == 1'b0)) ? flopped_count_en : 1'b0;
 assign next_count = (curr_count == COUNT_TO - 16'd1) ? {SIGNAL_WIDTH{1'b0}} : curr_count + 16'd1;
  
 //wire toggle_temp = (curr_count == 16'd0) & count_en ? 1'b1:1'b0; 

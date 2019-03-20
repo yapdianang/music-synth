@@ -56,9 +56,8 @@ reg [1:0] next_state;
 wire [3:0] step;
 wire [3:0] next_step;
 
-wire [15:0] curr_sample_count;
 wire signed [15:0] sample_in;
-reg [15:0] next_sample_count;
+
 reg [15:0] out_reg;
 wire switch_step, flopped_ready;
 wire signed [15:0] shift_1, shift_2, shift_3, shift_4, shift_5, shift_6;
@@ -160,10 +159,14 @@ dffre # (.WIDTH(1)) switch_ff(
 	.d(switch_step),
 	.q(flopped_switch)
 );
+
+wire [15:0] curr_sample_count, curr_sample_count_pre;
+reg [15:0] next_sample_count;
+
 dffre #(.WIDTH(16)) sample_count_ff(
 	.clk(clk),
 	.r(reset),
-	.en(in_ready),
+	.en(flopped_ready),
 	.d(next_sample_count),
 	.q(curr_sample_count)
 );
@@ -171,7 +174,7 @@ dffre #(.WIDTH(16)) sample_count_ff(
 dffre #(.WIDTH(2)) state_ff(
 	.clk(clk),
 	.r(reset),
-	.en(in_ready),
+	.en(flopped_ready),
 	.d(next_state),
 	.q(curr_state)
 );

@@ -38,14 +38,14 @@ initial begin
 	  #5
 	  forever begin
 	  //@(posedge clk);
-	  #50
-	  in_ready = 1'b1;
-	  sample_in = 16'b0111111111111111;
+	  #500
+	  in_ready <= 1'b1;
+	  sample_in <= 16'b0111111111111111;
 	  #10	  
-	  in_ready = 1'b0;
+	  in_ready <= 1'b0;
 	  //@(posedge clk);
-	  #40
-	  sample_in = 16'b0000000000000000;
+	  #490
+	  sample_in <= 16'b0000000000000000;
 	  end
 end
 /*
