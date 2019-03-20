@@ -46,6 +46,9 @@ module final_top(
     input btn_left,
     input btn_right,
     input btn_down,
+	 
+	 // toggles on board
+	 input [7:0] sw,
 
     // pmod Keypad
     inout [7:0] pmod_kypd,
@@ -113,7 +116,7 @@ module final_top(
 	//assign leds_r = EncO[4:1];
 	// these are to make the signals from the keypad one pulse, where one_pulse_kypd is the number that goes high for one cycle
 	wire [3:0] one_pulse_kypd;
-	
+	/*
 	button_press_unit #(.WIDTH(20)) button_press_unit1(
         .clk(clk_100),
         .reset(reset),
@@ -138,7 +141,7 @@ module final_top(
         .in(Decode[3]),
         .out(one_pulse_kypd[3])
     );
-	 /*
+	*/
 	edge_detector ed_0( 
 			.sig(Decode[0]),
 			.reset(reset),
@@ -152,7 +155,7 @@ module final_top(
 			.pe(one_pulse_kypd[1])
 	);
 	edge_detector ed_2(
-			.sig(Decode[2]),
+			.sig(Decode[2]), 
 			.reset(reset),
 			.clk(clk_100),
 			.pe(one_pulse_kypd[2])
@@ -163,10 +166,12 @@ module final_top(
 			.clk(clk_100),
 			.pe(one_pulse_kypd[3])
 	); 
-	*/
+
 	wire new_instrument = (one_pulse_kypd[0] | one_pulse_kypd[1] | one_pulse_kypd[2] | one_pulse_kypd[3]);
 	wire next_delay = (one_pulse_kypd == 4'b1010); // A
 	wire next_att = (one_pulse_kypd == 4'b1011); // B
+	wire switch_speakers = (one_pulse_kypd == 4'b1111);
+	//wire switch_speakers = (one_pulse_kypd == 4'b1111); // F
 	
     wire play;
     button_press_unit #(.WIDTH(BPU_WIDTH)) play_button_press_unit(
@@ -219,7 +224,7 @@ module final_top(
 		.next_H (next_att),
 		.out (echoed_sample),
 		.out_ready (echoed_ready)
-	 
+	  
 	 );
     dff #(.WIDTH(17)) sample_reg (
         .clk(clk_100),
@@ -285,6 +290,17 @@ module final_top(
         .new_sample(new_frame)
     );  
 */    
+
+	wire play_right;
+	wire play_left = ~play_right;
+	
+	dffre #(.WIDTH(1)) dly_dff_speakers (
+        .clk(clk),
+		  .r(reset),
+		  .en(switch_speakers),
+        .d(~play_right), 
+        .q(play_right)
+    );
 	  adau1761_codec echo_adau1761_codec(
 	  .clk_100(clk_100),
 	  .reset(reset),
@@ -297,8 +313,8 @@ module final_top(
 	  .AC_MCLK(AC_MCLK),
 	  .AC_SCK(AC_SCK),
 	  .AC_SDA(AC_SDA),
-	  .hphone_l({echoed_sample, 8'h00}),
-	  .hphone_r(hphone_r),
+	  .hphone_l(play_left ? {echoed_sample, 8'h00} : hphone_l),
+	  .hphone_r(play_right ? {echoed_sample, 8'h00} : hphone_r),
 	  .line_in_l(line_in_l),
 	  .line_in_r(line_in_r),
 	  .new_sample(new_frame)
