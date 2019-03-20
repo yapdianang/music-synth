@@ -122,7 +122,7 @@ module final_adsr(
 		.d(mp_codec_sample),
 		.q(flopped_mp_codec_sample)
 	);
-	dff #(.WIDTH(16))pre_adsr_ff(
+	dff #(.WIDTH(16))pre_adsr_ff_ready(
 		.clk(clk),
 		.d(mp_new_sample),
 		.q(flopped_mp_new_sample)
@@ -130,7 +130,7 @@ module final_adsr(
 	 adsr adsr_mod(
 		.clk (clk_100),
 		.reset (reset),
-		.pre_sample_in (flopped_mp_codec_sample),
+		.sample_in (flopped_mp_codec_sample),
 		.in_ready(flopped_mp_new_sample),
 		.sample_out (codec_sample),
 		.out_ready(new_sample)
