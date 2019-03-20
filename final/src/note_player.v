@@ -1,11 +1,12 @@
 `define NORMAL 4'b0000
-`define TRIANGLE1 4'b0001
-`define SQUARE 4'b0010 
-`define MYSTERY 4'b0011
-`define VIOLIN 4'b0100
-`define CLARINET 4'b0101
-`define TRUMPET 4'b0110
-`define CUSTOM 4'b0111
+`define TRIANGLE1 4'b0001 // 1
+`define SQUARE 4'b0010 //2
+`define MYSTERY 4'b0011 //2
+`define VIOLIN 4'b0100 //4
+`define CLARINET 4'b0101 //5
+`define TRUMPET 4'b0110 //6
+`define CUSTOM 4'b0111 //7
+`define CUSTOM 4'b1000 //8
 
 
 module  note_player (
