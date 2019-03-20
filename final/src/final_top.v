@@ -140,8 +140,8 @@ module final_top(
 	); 
 	
 	wire new_instrument = (one_pulse_kypd[0] | one_pulse_kypd[1] | one_pulse_kypd[2] | one_pulse_kypd[3]);
-	wire new_echo_up = (one_pulse_kypd == 4'b1010);
-	wire new_echo_down = (one_pulse_kypd == 4'b1011);
+	wire next_delay = (one_pulse_kypd == 4'b1010); // A
+	wire next_att = (one_pulse_kypd == 4'b1011); // B
 	
     wire play;
     button_press_unit #(.WIDTH(BPU_WIDTH)) play_button_press_unit(
@@ -182,15 +182,32 @@ module final_top(
 		  .wave2_out(wave2_out),
 		  .wave3_out(wave3_out)
     );
+	wire echoed_ready;
+	wire signed [15:0] echoed_sample;	
+	
+	 echo local_echo (
+		.clk(clk_100),
+		.reset (reset),
+		.sample_in(codec_sample),
+		.in_ready(new_sample),
+		.next_D (next_delay),
+		.next_H (next_att),
+		.out (echoed_sample),
+		.out_ready (echoed_ready)
 	 
-	 
-	 
+	 );
+    dff #(.WIDTH(17)) sample_reg (
+        .clk(clk_100),
+        .d({echoed_ready, echoed_sample}),
+        .q({flopped_new_sample, flopped_sample})
+    );
+	 /*
     dff #(.WIDTH(17)) sample_reg (
         .clk(clk_100),
         .d({new_sample, codec_sample}),
         .q({flopped_new_sample, flopped_sample})
     );
-	 
+	 */
     dff #(.WIDTH(16)) sample_reg1 (
         .clk(clk_100),
         .d(wave1_out),
@@ -218,10 +235,12 @@ module final_top(
 	wire [23:0] line_in_r =  0; 
 	
     // Output the sample onto the LEDs for the fun of it.
-     assign leds_r = codec_sample[15:12];
+     assign leds_r = echoed_sample[15:12];
+	  //assign leds_r = codec_sample[15:12];
+
     //assign leds_r = Decode;
 	 
-
+/*
     adau1761_codec adau1761_codec(
         .clk_100(clk_100),
         .reset(reset),
@@ -240,7 +259,25 @@ module final_top(
         .line_in_r(line_in_r),
         .new_sample(new_frame)
     );  
-    
+*/    
+	  adau1761_codec echo_adau1761_codec(
+	  .clk_100(clk_100),
+	  .reset(reset),
+	  .AC_ADR0(AC_ADR0),
+	  .AC_ADR1(AC_ADR1),
+	  .I2S_MISO(AC_GPIO0),
+	  .I2S_MOSI(AC_GPIO1),
+	  .I2S_bclk(AC_GPIO2),
+	  .I2S_LR(AC_GPIO3),
+	  .AC_MCLK(AC_MCLK),
+	  .AC_SCK(AC_SCK),
+	  .AC_SDA(AC_SDA),
+	  .hphone_l({echoed_sample, 8'h00}),
+	  .hphone_r(hphone_r),
+	  .line_in_l(line_in_l),
+	  .line_in_r(line_in_r),
+	  .new_sample(new_frame)
+    );  
 //   
 //  ****************************************************************************
 //      Display management
@@ -304,7 +341,7 @@ module final_top(
     wave_display_top wd_top (
 		.clk (clk_100),
 		.reset (reset),
-		.new_sample (new_sample),
+		.new_sample (echoed_ready), //Need to set this to generalized output sample later on
 		.sample (flopped_sample),
 		// .x(x_q[10:0]),
 		// .y(y_q[9:0]),
@@ -320,7 +357,7 @@ module final_top(
 	  wave_display_top wd_top1 (
 		.clk (clk_100),
 		.reset (reset),
-		.new_sample (new_sample),
+		.new_sample (echoed_ready),
 		.sample (flopped_wave1),
 		// .x(x_q[10:0]),
 		// .y(y_q[9:0]),
@@ -336,7 +373,7 @@ module final_top(
 	  wave_display_top wd_top2 (
 		.clk (clk_100),
 		.reset (reset),
-		.new_sample (new_sample),
+		.new_sample (echoed_ready),
 		.sample (flopped_wave2),
 		// .x(x_q[10:0]),
 		// .y(y_q[9:0]),
@@ -352,7 +389,7 @@ module final_top(
 	 wave_display_top wd_top3 (
 		.clk (clk_100),
 		.reset (reset),
-		.new_sample (new_sample),
+		.new_sample (echoed_ready),
 		.sample (flopped_wave3),
 		// .x(x_q[10:0]),
 		// .y(y_q[9:0]),
