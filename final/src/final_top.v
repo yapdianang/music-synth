@@ -114,6 +114,31 @@ module final_top(
 	// these are to make the signals from the keypad one pulse, where one_pulse_kypd is the number that goes high for one cycle
 	wire [3:0] one_pulse_kypd;
 	
+	button_press_unit #(.WIDTH(20)) button_press_unit1(
+        .clk(clk_100),
+        .reset(reset),
+        .in(Decode[0]),
+        .out(one_pulse_kypd[0])
+    );
+	 	button_press_unit #(.WIDTH(20)) button_press_unit2(
+        .clk(clk_100),
+        .reset(reset),
+        .in(Decode[1]),
+        .out(one_pulse_kypd[1])
+    );
+	 	button_press_unit #(.WIDTH(20)) button_press_unit3(
+        .clk(clk_100),
+        .reset(reset),
+        .in(Decode[2]),
+        .out(one_pulse_kypd[2])
+    );
+	 	button_press_unit #(.WIDTH(20)) button_press_unit4(
+        .clk(clk_100),
+        .reset(reset),
+        .in(Decode[3]),
+        .out(one_pulse_kypd[3])
+    );
+	 /*
 	edge_detector ed_0( 
 			.sig(Decode[0]),
 			.reset(reset),
@@ -138,7 +163,7 @@ module final_top(
 			.clk(clk_100),
 			.pe(one_pulse_kypd[3])
 	); 
-	
+	*/
 	wire new_instrument = (one_pulse_kypd[0] | one_pulse_kypd[1] | one_pulse_kypd[2] | one_pulse_kypd[3]);
 	wire next_delay = (one_pulse_kypd == 4'b1010); // A
 	wire next_att = (one_pulse_kypd == 4'b1011); // B
