@@ -44,7 +44,7 @@ module adsr(
 module adsr(
 	input clk,
 	input reset,
-	input signed [15:0] pre_sample_in,
+	input signed [15:0] sample_in,
 	input in_ready,
 	output signed [15:0] sample_out,
 	output out_ready
@@ -56,7 +56,6 @@ reg [1:0] next_state;
 wire [3:0] step;
 wire [3:0] next_step;
 
-wire signed [15:0] sample_in;
 
 reg [15:0] out_reg;
 wire switch_step, flopped_ready;
@@ -73,13 +72,18 @@ dffr #(.WIDTH(1)) ready_ff(
 
 assign out_ready = flopped_ready;
 
-dffre #(.WIDTH(16)) sample(
+/*
+
+wire signed [15:0] sample_in;
+
+dffr #(.WIDTH(16)) sample_ff(
 	.clk(clk),
 	.r(reset),
-	.en(in_ready),
+//	.en(in_ready),
 	.d(pre_sample_in),
 	.q(sample_in)
 );
+*/
 
 wire signed [15:0] pre_shift_1 = $signed(sample_in) >>> 1;
 wire signed [15:0] pre_shift_2 = $signed(sample_in) >>> 2;
@@ -88,45 +92,45 @@ wire signed [15:0] pre_shift_4 = $signed(sample_in) >>> 4;
 wire signed [15:0] pre_shift_5 = $signed(sample_in) >>> 5;
 wire signed [15:0] pre_shift_6 = $signed(sample_in) >>> 6;
 
-dffre #(.WIDTH(16)) shift_1_ff(
+dffr #(.WIDTH(16)) shift_1_ff(
 	.clk(clk),
 	.r(reset),
-	.en(in_ready),
+//	.en(in_ready),
 	.d(pre_shift_1),
 	.q(shift_1)
 );
-dffre #(.WIDTH(16)) shift_2_ff(
+dffr #(.WIDTH(16)) shift_2_ff(
 	.clk(clk),
 	.r(reset),
-	.en(in_ready),
+//	.en(in_ready),
 	.d(pre_shift_2),
 	.q(shift_2)
 );
-dffre #(.WIDTH(16)) shift_3_ff(
+dffr #(.WIDTH(16)) shift_3_ff(
 	.clk(clk),
 	.r(reset),
-	.en(in_ready),
+//	.en(in_ready),
 	.d(pre_shift_3),
 	.q(shift_3)
 );
-dffre #(.WIDTH(16)) shift_4_ff(
+dffr #(.WIDTH(16)) shift_4_ff(
 	.clk(clk),
 	.r(reset),
-	.en(in_ready),
+//	.en(in_ready),
 	.d(pre_shift_4),
 	.q(shift_4)
 );
-dffre #(.WIDTH(16)) shift_5_ff(
+dffr #(.WIDTH(16)) shift_5_ff(
 	.clk(clk),
 	.r(reset),
-	.en(in_ready),
+//	.en(in_ready),
 	.d(pre_shift_5),
 	.q(shift_5)
 );
-dffre #(.WIDTH(16)) shift_6_ff(
+dffr #(.WIDTH(16)) shift_6_ff(
 	.clk(clk),
 	.r(reset),
-	.en(in_ready),
+//	.en(in_ready),
 	.d(pre_shift_6),
 	.q(shift_6)
 );
@@ -150,8 +154,8 @@ dffre #(.WIDTH(4)) step_ff(
 	.q(step)
 );
 
-wire flopped_switch;
-
+//wire flopped_switch;
+/*
 dffre # (.WIDTH(1)) switch_ff(
 	.clk(clk),
 	.r(reset),
@@ -159,7 +163,7 @@ dffre # (.WIDTH(1)) switch_ff(
 	.d(switch_step),
 	.q(flopped_switch)
 );
-
+*/
 wire [15:0] curr_sample_count, curr_sample_count_pre;
 reg [15:0] next_sample_count;
 
@@ -178,14 +182,7 @@ dffre #(.WIDTH(2)) state_ff(
 	.d(next_state),
 	.q(curr_state)
 );
-/*
-dffr # (.WIDTH(16)) sample_ff(
-	.clk(clk),
-	.r(reset),
-	.d(predelay_sample_in),
-	.q(sample_in)
-);
-*/
+
 assign next_step = (step == `S9) ? `S0 : step + 4'd1;
 
 always @(*) begin

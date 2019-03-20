@@ -15,15 +15,17 @@ module adsr_tb();
 
 reg clk, reset; // generate_next;
 reg in_ready;
+wire out_ready;
 reg signed [15:0] sample_in;
 wire signed [15:0] sample_out; 
 
 adsr dut_adsr(
    .clk(clk),
 	.reset(reset),
-	.pre_sample_in(sample_in),
+	.sample_in(sample_in),
 	.in_ready (in_ready),
-	.sample_out (sample_out)
+	.sample_out (sample_out),
+	.out_ready(out_ready)
 );
 // Clock and reset
 initial begin
@@ -38,13 +40,13 @@ initial begin
 	  #5
 	  forever begin
 	  //@(posedge clk);
-	  #500
+	  #50
 	  in_ready <= 1'b1;
 	  sample_in <= 16'b0111111111111111;
 	  #10	  
 	  in_ready <= 1'b0;
 	  //@(posedge clk);
-	  #490
+	  #40
 	  sample_in <= 16'b0000000000000000;
 	  end
 end
