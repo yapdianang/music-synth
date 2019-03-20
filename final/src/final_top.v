@@ -116,32 +116,7 @@ module final_top(
 	//assign leds_r = EncO[4:1];
 	// these are to make the signals from the keypad one pulse, where one_pulse_kypd is the number that goes high for one cycle
 	wire [3:0] one_pulse_kypd;
-	/*
-	button_press_unit #(.WIDTH(20)) button_press_unit1(
-        .clk(clk_100),
-        .reset(reset),
-        .in(Decode[0]),
-        .out(one_pulse_kypd[0])
-    );
-	 	button_press_unit #(.WIDTH(20)) button_press_unit2(
-        .clk(clk_100),
-        .reset(reset),
-        .in(Decode[1]),
-        .out(one_pulse_kypd[1])
-    );
-	 	button_press_unit #(.WIDTH(20)) button_press_unit3(
-        .clk(clk_100),
-        .reset(reset),
-        .in(Decode[2]),
-        .out(one_pulse_kypd[2])
-    );
-	 	button_press_unit #(.WIDTH(20)) button_press_unit4(
-        .clk(clk_100),
-        .reset(reset),
-        .in(Decode[3]),
-        .out(one_pulse_kypd[3])
-    );
-	*/
+
 	edge_detector ed_0( 
 			.sig(Decode[0]),
 			.reset(reset),
@@ -167,10 +142,22 @@ module final_top(
 			.pe(one_pulse_kypd[3])
 	); 
 
+	wire next_delay, next_att;
+    button_press_unit #(.WIDTH(BPU_WIDTH)) bpu_1(
+        .clk(clk_100),
+        .reset(reset),
+        .in(sw[7]),
+        .out(next_delay)
+    );
+	     button_press_unit #(.WIDTH(BPU_WIDTH)) bpu_2(
+        .clk(clk_100),
+        .reset(reset),
+        .in(sw[6]),
+        .out(next_att)
+    );
+
 	wire new_instrument = (one_pulse_kypd[0] | one_pulse_kypd[1] | one_pulse_kypd[2] | one_pulse_kypd[3]);
-	wire next_delay = (one_pulse_kypd == 4'b1010); // A
-	wire next_att = (one_pulse_kypd == 4'b1011); // B
-	wire switch_speakers = (one_pulse_kypd == 4'b1111);
+
 	//wire switch_speakers = (one_pulse_kypd == 4'b1111); // F
 	
     wire play;
@@ -198,23 +185,42 @@ module final_top(
     wire [15:0] codec_sample, flopped_sample, wave1_out, wave2_out, wave3_out;
 	 wire [15:0] flopped_wave1, flopped_wave2, flopped_wave3;
     wire new_sample, flopped_new_sample;
+	 
+	 
+wire signed [15:0] pre_flopped_codec_sample;
+wire pre_flopped_new_sample;
     music_player #(.BEAT_COUNT(BEAT_COUNT)) music_player(
         .clk(clk_100),
-        .reset(reset),
+        .reset(reset), 
         .play_button(play),
         .next_button(next),
         .new_frame(new_frame), 
-        .sample_out(codec_sample),
-        .new_sample_generated(new_sample),
+        .sample_out(pre_flopped_codec_sample),
+        .new_sample_generated(pre_flopped_new_sample),
 		  .instruments(Decode),
 		  .new_instrument(new_instrument),
 		  .wave1_out(wave1_out),
 		  .wave2_out(wave2_out),
 		  .wave3_out(wave3_out)
     );
-	wire echoed_ready;
-	wire signed [15:0] echoed_sample;	
+	wire echoed_ready, pre_adsr_echoed_ready;
+	wire signed [15:0] echoed_sample, pre_adsr_echoed_sample;
 	
+
+dff #(.WIDTH(16)) sample_top_ff(
+	.clk(clk_100),
+	.d(pre_flopped_codec_sample),
+	.q(codec_sample)
+
+);	
+
+dff #(.WIDTH(16)) sample_top_ff_ready(
+	.clk(clk_100),
+	.d(pre_flopped_new_sample),
+	.q(new_sample)
+
+);	
+	/*
 	 echo local_echo (
 		.clk(clk_100),
 		.reset (reset),
@@ -222,9 +228,19 @@ module final_top(
 		.in_ready(new_sample),
 		.next_D (next_delay),
 		.next_H (next_att),
-		.out (echoed_sample),
-		.out_ready (echoed_ready)
+		.out (pre_adsr_echoed_sample),
+		.out_ready (pre_echoed_ready)
 	  
+	 );
+	*/ 
+	 adsr local_adsr (
+		.clk(clk_100),
+		.reset(reset),
+		.sample_in(codec_sample),
+		.in_ready(new_sample),
+		.sample_out(echoed_sample),
+		.out_ready (echoed_ready)
+	 
 	 );
     dff #(.WIDTH(17)) sample_reg (
         .clk(clk_100),
@@ -291,16 +307,7 @@ module final_top(
     );  
 */    
 
-	wire play_right;
-	wire play_left = ~play_right;
-	
-	dffre #(.WIDTH(1)) dly_dff_speakers (
-        .clk(clk),
-		  .r(reset),
-		  .en(switch_speakers),
-        .d(~play_right), 
-        .q(play_right)
-    );
+
 	  adau1761_codec echo_adau1761_codec(
 	  .clk_100(clk_100),
 	  .reset(reset),
@@ -313,8 +320,8 @@ module final_top(
 	  .AC_MCLK(AC_MCLK),
 	  .AC_SCK(AC_SCK),
 	  .AC_SDA(AC_SDA),
-	  .hphone_l(play_left ? {echoed_sample, 8'h00} : hphone_l),
-	  .hphone_r(play_right ? {echoed_sample, 8'h00} : hphone_r),
+	  .hphone_l(sw[0] ? {echoed_sample, 8'h00} : hphone_l),
+	  .hphone_r(sw[1] ? {echoed_sample, 8'h00} : hphone_r),
 	  .line_in_l(line_in_l),
 	  .line_in_r(line_in_r),
 	  .new_sample(new_frame)
@@ -447,20 +454,6 @@ module final_top(
 	 assign g_1 = g_sub2 + g_all;
 	 assign b_1 = b_sub3 + b_all;
 	 
-    // dff #(.WIDTH (8)) r_flop (
-    //     .clk(clk_100),
-    //     .d(r_1),
-    //     .q(r));
-
-    // dff #(.WIDTH (8)) g_flop (
-    //     .clk(clk_100),
-    //     .d(g_1),
-    //     .q(g));
-
-    // dff #(.WIDTH (8)) b_flop (
-    //     .clk(clk_100),
-    //     .d(b_1),
-    //     .q(b));
 
 endmodule
 

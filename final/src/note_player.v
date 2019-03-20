@@ -6,7 +6,8 @@
 `define CLARINET 4'b0101 //5
 `define TRUMPET 4'b0110 //6
 `define CUSTOM 4'b0111 //7
-`define CUSTOM 4'b1000 //8
+`define FLUTE 4'b1000
+`define PIANO 4'b1001
 
 
 module  note_player (
@@ -195,6 +196,8 @@ wire signed [15:0] out1_shift_3 = $signed(delay_out_1) >>> 3;
 wire signed [15:0] out1_shift_4 = $signed(delay_out_1) >>> 4;
 wire signed [15:0] out2_shift_2 = $signed(delay_out_2) >>> 2;
 wire signed [15:0] out2_shift_3 = $signed(delay_out_2) >>> 3;
+wire signed [15:0] out2_shift_4 = $signed(delay_out_2) >>> 4;
+wire signed [15:0] out2_shift_5 = $signed(delay_out_2) >>> 5;
 wire signed [15:0] out2_shift_6 = $signed(delay_out_2) >>> 6;
 wire signed [15:0] out3_shift_3 = $signed(delay_out_3) >>> 3;
 wire signed [15:0] out3_shift_4 = $signed(delay_out_3) >>> 4;
@@ -251,6 +254,13 @@ always @(*) begin
 		`CUSTOM: begin
 			sample_out_reg =  ((out1_shift_3) + (out2_shift_3) + (out3_shift_3) + (out4_shift_5) + (out5_shift_5) + (out6_shift_5) + (out7_shift_4));
 		end
+		`FLUTE: begin
+			sample_out_reg = (out1_shift_4 + out2_shift_2 + out2_shift_3 + out2_shift_4 + out3_shift_3 + out3_shift_4 + out4_shift_4 + out4_shift_5);
+		end
+		`PIANO: begin
+			sample_out_reg = out1_shift_1 + out2_shift_5 + out2_shift_6 + out3_shift_3 + out3_shift_5 + out4_shift_5 + out5_shift_5 + out6_shift_5;
+		end
+		
 		default: begin
 			sample_out_reg = out1_shift_1;
 		end
