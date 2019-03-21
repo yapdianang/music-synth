@@ -310,10 +310,11 @@ panning local_pan(
 );
 
 wire signed [23:0] flopped_panned_sample_left, flopped_panned_sample_right;
+wire flopped_panned_ready;
  dff #(.WIDTH(49)) pan_ff (
 	  .clk(clk_100),
 	  .d({{8'd0, panned_left}, {8'd0, panned_right}, panned_ready}),
-	  .q({flopped_panned_sample_left, flopped_panned_sample_right, panned_ready})
+	  .q({flopped_panned_sample_left, flopped_panned_sample_right, flopped_panned_ready})
  );
 
 //   
