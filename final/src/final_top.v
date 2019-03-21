@@ -165,7 +165,7 @@ module final_top(
         .clk(clk_100),
         .reset(reset),
         .in(btn_left),
-        .out(play)
+        .out(play) 
     );
 
     wire next;
@@ -239,7 +239,7 @@ wire signed [15:0] flopped_wave1, flopped_wave2, flopped_wave3;
 	  .d(wave3_out),
 	  .q(flopped_wave3)
  );
-
+ 
 wire signed [15:0] adsr_out;
 wire adsr_ready;
 
@@ -272,9 +272,6 @@ wire flopped_mux_ready;
 wire signed [15:0] post_echoed_sample;
 wire post_echoed_ready;
 		
-	assign post_echoed_sample = flopped_mux_sample;
-	assign post_echoed_ready = flopped_mux_ready;
-	/*
 	 echo local_echo (
 		.clk(clk_100),
 		.reset (reset),
@@ -286,7 +283,7 @@ wire post_echoed_ready;
 		.out_ready (post_echoed_ready)
 	  
 	 );
-	 */
+	 
 wire signed [15:0] flopped_echoed_sample;
 wire flopped_echoed_ready;
 
@@ -295,7 +292,7 @@ wire flopped_echoed_ready;
         .d({post_echoed_ready, post_echoed_sample}),
         .q({flopped_echoed_ready, flopped_echoed_sample})
     );
-	 
+	  
 
 //   
 //  ****************************************************************************
