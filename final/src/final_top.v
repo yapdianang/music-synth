@@ -296,6 +296,26 @@ wire flopped_echoed_ready;
     );
 	  
 
+wire signed [15:0] panned_left, panned_right;
+wire panned_ready;
+
+panning local_pan(
+	.clk(clk_100),
+	.reset(reset),
+	.sample_in(flopped_echoed_sample),
+	.in_ready (flopped_echoed_ready),
+	.out_L (panned_left),
+	.out_R (panned_right),
+	.out_ready(panned_ready)
+);
+
+wire signed [23:0] flopped_panned_sample_left, flopped_panned_sample_right;
+ dff #(.WIDTH(49)) pan_ff (
+	  .clk(clk_100),
+	  .d({{8'd0, panned_left}, {8'd0, panned_right}, panned_ready}),
+	  .q({flopped_panned_sample_left, flopped_panned_sample_right, panned_ready})
+ );
+
 //   
 //  ****************************************************************************
 //      Codec interface
@@ -351,12 +371,15 @@ wire flopped_echoed_ready;
 	  .AC_MCLK(AC_MCLK),
 	  .AC_SCK(AC_SCK),
 	  .AC_SDA(AC_SDA),
-	  .hphone_l(sw[0] ? hphone_in - {19'b0, EncO, 8'b0} : hphone_l),
-	  .hphone_r(sw[1] ? hphone_in + {19'b0, EncO, 8'b0}: hphone_r),
+	  .hphone_l(flopped_panned_sample_left),
+	  .hphone_r(flopped_panned_sample_right),
 	  .line_in_l(line_in_l),
 	  .line_in_r(line_in_r),
 	  .new_sample(new_frame)
     );  
+	 
+//sw[0] ? hphone_in - {19'b0, EncO, 8'b0} : hphone_l
+//sw[1] ? hphone_in + {19'b0, EncO, 8'b0}: hphone_r
 //   
 //  ****************************************************************************
 //      Display management

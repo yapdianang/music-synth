@@ -15,7 +15,7 @@
 `define L50R50 2'd1
 `define L75R25 2'd2
 `define L100R0 2'd3
-`define t_state 48000 
+`define t_state 10
 `define t_2 4800
 `define t_3 4800
 `define t_4 4800
@@ -141,20 +141,20 @@ always @(*) begin
    
 	casex (curr_state)
 		`L25R75:begin
-			out_L_reg = shift_2;
-			out_R_reg = shift_1 + shift_2;
+			out_L_reg = shift_3;
+			out_R_reg = shift_1 + shift_2 + shift_3;
 		end
 		`L50R50: begin
 			out_L_reg = shift_1;
 			out_R_reg = shift_1;
 		end
 		`L75R25: begin
-			out_L_reg = shift_1 + shift_2;
-			out_R_reg = shift_2;
+			out_L_reg = shift_1 + shift_2 + shift_3;
+			out_R_reg = shift_3;
 		end
 		`L100R0: begin
-			out_L_reg = shift_2;
-			out_R_reg = shift_1 + shift_2;
+			out_L_reg = shift_1;
+			out_R_reg = shift_1;
 		end
 		default: begin
 			out_L_reg = 16'd0;
