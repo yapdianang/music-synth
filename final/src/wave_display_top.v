@@ -56,6 +56,6 @@ module wave_display_top(
         .r(wd_r), .g(wd_g), .b(wd_b)
     );
 
-    assign {r, g, b} = valid_pixel ? {wd_r, wd_g, wd_b} : {3{8'b0}};
-
+    //assign {r, g, b} = valid_pixel ? {wd_r, wd_g, wd_b} : {3{8'b0}};
+	assign {r, g, b} = {wd_r, wd_g, wd_b} ;
 endmodule

@@ -30,7 +30,9 @@
 	 input new_instrument,
 	 output [15:0] wave1_out, 
 	 output [15:0] wave2_out, 
-	 output [15:0] wave3_out
+	 output [15:0] wave3_out,
+	 input speed_up,
+	 input rewind
 );
     // The BEAT_COUNT is parameterized so you can reduce this in simulation.
     // If you reduce this to 100 your simulation will be 10x faster.
@@ -87,7 +89,9 @@
 		  .note_done3(note_done3),
 		  .np1_busy(np1_busy),
 		  .np2_busy(np2_busy),
-		  .np3_busy(np3_busy)
+		  .np3_busy(np3_busy),
+		  .speed_up(speed_up),
+		  .rewind(rewind)
     );
 
 //   

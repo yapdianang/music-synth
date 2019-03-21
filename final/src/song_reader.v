@@ -8,6 +8,7 @@
 `define CHECK_DONE 2'b11
 //`define WAITING_NOTE 2'b11
 `define LAST_NOTE 7'd127
+`define FIRST_NOTE 7'd0
 //`define ALL_BUSY 3'b111
 
 module song_reader(
@@ -27,7 +28,9 @@ module song_reader(
 	 output new_note3,
 	 output np1_busy,
 	 output np2_busy,
-	 output np3_busy
+	 output np3_busy,
+	 input speed_up,
+	 input rewind
 ); 
 
 // Implementation goes here!
@@ -176,10 +179,10 @@ always @(*) begin
 	 end
 	 `INCREMENT_ADDR: begin
 	  // wait a clock cycle for the rom to catch up
-		next_state = (current_note == `LAST_NOTE)? `WAIT :`WAIT_ROM;
+		next_state = (rewind ? (current_note == `FIRST_NOTE) : (current_note == `LAST_NOTE))? `WAIT :`WAIT_ROM;
 		new_note_reg = 1'b0;
-		song_done_reg = (current_note == `LAST_NOTE)? 1'b1 : 1'b0;
-		next_note = (current_note == `LAST_NOTE)? 5'd0 : current_note + 5'd1;
+		song_done_reg = (rewind ? (current_note == `FIRST_NOTE) : (current_note == `LAST_NOTE))? 1'b1 : 1'b0;
+		next_note = rewind ? ((current_note == `FIRST_NOTE)? `LAST_NOTE : current_note - 7'd1) : ((current_note == `LAST_NOTE)? `FIRST_NOTE : current_note + 7'd1);
 		next_stop_button = 0;
 		next_count = 0;
 	//	$display("WAITING_ROM");
@@ -192,7 +195,7 @@ always @(*) begin
 		next_note = current_note;
 		next_stop_button = 0;
 		next_count = 0;
-	 end
+	 end 
 	 `CHECK_DONE : begin
 		new_note_reg = 1'b0;
 		song_done_reg = 1'b0;
@@ -231,8 +234,10 @@ always @(*) begin
 
 end
 
+wire [5:0] duration_holder;
 assign song_done = delay_song_done;//
-assign {note, duration} = song_rom_out[14:3];
+assign {note, duration_holder} = song_rom_out[14:3];
+assign duration = speed_up ? duration_holder >> 1 : duration_holder;
 //assign new_note = delay_new_note; 
 //assign new_note1 = (busy_players == (3'b000||3'b001||3'b010||3'b011)) ? delay_new_note : 1'b0;
 assign new_note1 = (((busy_players == 3'b000) || (busy_players == 3'b001) || (busy_players == 3'b010) || (busy_players == 3'b011))&&(song_rom_out[15] != 1)) ?  delay_new_note : 1'b0;

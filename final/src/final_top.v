@@ -199,7 +199,9 @@ music_player #(.BEAT_COUNT(BEAT_COUNT)) music_player(
 	.new_instrument(new_instrument),
 	.wave1_out(wave1_out),
 	.wave2_out(wave2_out),
-	.wave3_out(wave3_out)
+	.wave3_out(wave3_out),
+	.speed_up(sw[4]),
+	.rewind(sw[5])
 );
 	
 
@@ -301,6 +303,7 @@ wire flopped_echoed_ready;
 //  
 
    wire [23:0] hphone_r = 0;
+	wire [23:0] hphone_l = 0;
 	wire [23:0] line_in_l = 0;  
 	wire [23:0] line_in_r =  0; 
 	
@@ -330,8 +333,9 @@ wire flopped_echoed_ready;
         .new_sample(new_frame)
     );  
 */    
-
-
+	//wire [15:0] flopped_echoed_sample_75 = (flopped_echoed_sample << 1) + (flopped_echoed_sample << 2);
+//	wire [15:0] flopped_echoed_sample_25 = (flopped_echoed_sample << 2);
+	  wire [23:0] hphone_in = {flopped_echoed_sample, 8'h00};
 	  adau1761_codec echo_adau1761_codec(
 	  .clk_100(clk_100),
 	  .reset(reset),
@@ -344,8 +348,8 @@ wire flopped_echoed_ready;
 	  .AC_MCLK(AC_MCLK),
 	  .AC_SCK(AC_SCK),
 	  .AC_SDA(AC_SDA),
-	  .hphone_l(sw[0] ? {flopped_echoed_sample, 8'h00} : hphone_l),
-	  .hphone_r(sw[1] ? {flopped_echoed_sample, 8'h00} : hphone_r),
+	  .hphone_l(sw[0] ? hphone_in - {19'b0, EncO} : hphone_l),
+	  .hphone_r(sw[1] ? hphone_in + {19'b0, EncO}: hphone_r),
 	  .line_in_l(line_in_l),
 	  .line_in_r(line_in_r),
 	  .new_sample(new_frame)
