@@ -335,6 +335,9 @@ wire flopped_echoed_ready;
 */    
 	//wire [15:0] flopped_echoed_sample_75 = (flopped_echoed_sample << 1) + (flopped_echoed_sample << 2);
 //	wire [15:0] flopped_echoed_sample_25 = (flopped_echoed_sample << 2);
+
+//	  .hphone_l(sw[0] ? hphone_in - {19'b0, EncO, 8'b0} : hphone_l),
+//	  .hphone_r(sw[1] ? hphone_in + {19'b0, EncO, 8'b0}: hphone_r),//
 	  wire [23:0] hphone_in = {flopped_echoed_sample, 8'h00};
 	  adau1761_codec echo_adau1761_codec(
 	  .clk_100(clk_100),
@@ -348,8 +351,8 @@ wire flopped_echoed_ready;
 	  .AC_MCLK(AC_MCLK),
 	  .AC_SCK(AC_SCK),
 	  .AC_SDA(AC_SDA),
-	  .hphone_l(sw[0] ? hphone_in - {19'b0, EncO} : hphone_l),
-	  .hphone_r(sw[1] ? hphone_in + {19'b0, EncO}: hphone_r),
+	  .hphone_l(sw[0] ? hphone_in - {19'b0, EncO, 8'b0} : hphone_l),
+	  .hphone_r(sw[1] ? hphone_in + {19'b0, EncO, 8'b0}: hphone_r),
 	  .line_in_l(line_in_l),
 	  .line_in_r(line_in_r),
 	  .new_sample(new_frame)
