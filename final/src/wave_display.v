@@ -66,8 +66,8 @@ always @(*) begin
 		colored_white = ((short_y <= prev_read_value) & (short_y >= read_value)) ? `HIGH : `LOW;
 	end
 	
-	// if (~valid || y[9] || x[9:8] == 2'b00 || x[9:8] >= 2'b11 || x < 11'b00100001100) begin
-	if (~valid || x[9:8] == 2'b00 || x[9:8] >= 2'b11 || x < 11'b00100001100) begin
+	 if (~valid || y[9] || x[9:8] == 2'b00 || x[9:8] >= 2'b11 || x < 11'b00100001100) begin
+	//if (~valid || x[9:8] == 2'b00 || x[9:8] >= 2'b11 || x < 11'b00100001100) begin
 	//  x < 11'b100001100: as per private piazza post that says remove out the few pixels on the left of quadrant 01
 		valid_region = `LOW;
 	end else begin

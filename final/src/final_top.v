@@ -146,13 +146,13 @@ module final_top(
     button_press_unit #(.WIDTH(BPU_WIDTH)) bpu_1(
         .clk(clk_100),
         .reset(reset),
-        .in(sw[7]),
+        .in(sw[3]),
         .out(next_delay)
     );
 	     button_press_unit #(.WIDTH(BPU_WIDTH)) bpu_2(
         .clk(clk_100),
         .reset(reset),
-        .in(sw[6]),
+        .in(sw[2]),
         .out(next_att)
     );
 
@@ -181,94 +181,121 @@ module final_top(
 //      The music player
 //  ****************************************************************************
 //       
-    wire new_frame;
-    wire [15:0] codec_sample, flopped_sample, wave1_out, wave2_out, wave3_out;
-	 wire [15:0] flopped_wave1, flopped_wave2, flopped_wave3;
-    wire new_sample, flopped_new_sample;
-	 
-	 
-wire signed [15:0] pre_flopped_codec_sample;
+wire new_frame;
+wire signed [15:0] wave1_out, wave2_out, wave3_out;
 wire pre_flopped_new_sample;
-    music_player #(.BEAT_COUNT(BEAT_COUNT)) music_player(
-        .clk(clk_100),
-        .reset(reset), 
-        .play_button(play),
-        .next_button(next),
-        .new_frame(new_frame), 
-        .sample_out(pre_flopped_codec_sample),
-        .new_sample_generated(pre_flopped_new_sample),
-		  .instruments(Decode),
-		  .new_instrument(new_instrument),
-		  .wave1_out(wave1_out),
-		  .wave2_out(wave2_out),
-		  .wave3_out(wave3_out)
-    );
-	wire echoed_ready, pre_adsr_echoed_ready;
-	wire signed [15:0] echoed_sample, pre_adsr_echoed_sample;
+wire signed [15:0] pre_flopped_codec_sample;
+
+
+music_player #(.BEAT_COUNT(BEAT_COUNT)) music_player(
+	.clk(clk_100),
+	.reset(reset), 
+	.play_button(play),
+	.next_button(next),
+	.new_frame(new_frame), 
+	.sample_out(pre_flopped_codec_sample),
+	.new_sample_generated(pre_flopped_new_sample),
+	.instruments(Decode),
+	.new_instrument(new_instrument),
+	.wave1_out(wave1_out),
+	.wave2_out(wave2_out),
+	.wave3_out(wave3_out)
+);
 	
 
-dff #(.WIDTH(16)) sample_top_ff(
+wire new_sample;
+wire signed [15:0] codec_sample;
+
+dff #(.WIDTH(17)) mp_delay_ff(
 	.clk(clk_100),
-	.d(pre_flopped_codec_sample),
-	.q(codec_sample)
+	.d({pre_flopped_new_sample, pre_flopped_codec_sample}),
+	.q({new_sample, codec_sample})
 
 );	
 
-dff #(.WIDTH(16)) sample_top_ff_ready(
+wire flopped_new_sample;
+wire signed [15:0] flopped_codec_sample;
+dff #(.WIDTH(17)) mp_delay_ff_2(
 	.clk(clk_100),
-	.d(pre_flopped_new_sample),
-	.q(new_sample)
+	.d({new_sample, codec_sample}),
+	.q({flopped_new_sample, flopped_codec_sample})
 
 );	
-	/*
-	 echo local_echo (
-		.clk(clk_100),
-		.reset (reset),
-		.sample_in(codec_sample),
-		.in_ready(new_sample),
-		.next_D (next_delay),
-		.next_H (next_att),
-		.out (pre_adsr_echoed_sample),
-		.out_ready (pre_echoed_ready)
-	  
-	 );
-	*/ 
+
+wire signed [15:0] flopped_wave1, flopped_wave2, flopped_wave3;
+
+ dff #(.WIDTH(16)) sample_reg1 (
+	  .clk(clk_100),
+	  .d(wave1_out),
+	  .q({flopped_wave1})
+ );
+ dff #(.WIDTH(16)) sample_reg2 (
+	  .clk(clk_100),
+	  .d(wave2_out),
+	  .q(flopped_wave2)
+ );
+ dff #(.WIDTH(16)) sample_reg3 (
+	  .clk(clk_100),
+	  .d(wave3_out),
+	  .q(flopped_wave3)
+ );
+
+wire signed [15:0] adsr_out;
+wire adsr_ready;
+
 	 adsr local_adsr (
 		.clk(clk_100),
 		.reset(reset),
 		.sample_in(codec_sample),
 		.in_ready(new_sample),
-		.sample_out(echoed_sample),
-		.out_ready (echoed_ready)
+		.sample_out(adsr_out),
+		.out_ready (adsr_ready)
 	 
 	 );
+	 
+ wire signed [15:0] mux_sample;
+ wire mux_ready;
+ 
+	 assign mux_sample = sw[7]? adsr_out : flopped_codec_sample;
+	 assign mux_ready = sw[7]? adsr_ready : flopped_new_sample;
+
+	
+wire signed [15:0] flopped_mux_sample;
+wire flopped_mux_ready;
+
     dff #(.WIDTH(17)) sample_reg (
         .clk(clk_100),
-        .d({echoed_ready, echoed_sample}),
-        .q({flopped_new_sample, flopped_sample})
+        .d({mux_ready, mux_sample}),
+        .q({flopped_mux_ready, flopped_mux_sample})
     );
-	 /*
-    dff #(.WIDTH(17)) sample_reg (
-        .clk(clk_100),
-        .d({new_sample, codec_sample}),
-        .q({flopped_new_sample, flopped_sample})
-    );
+
+wire signed [15:0] post_echoed_sample;
+wire post_echoed_ready;
+		
+	assign post_echoed_sample = flopped_mux_sample;
+	assign post_echoed_ready = flopped_mux_ready;
+	/*
+	 echo local_echo (
+		.clk(clk_100),
+		.reset (reset),
+		.sample_in(flopped_mux_sample),
+		.in_ready(flopped_mux_ready),
+		.next_D (next_delay),
+		.next_H (next_att),
+		.out (post_echoed_sample),
+		.out_ready (post_echoed_ready)
+	  
+	 );
 	 */
-    dff #(.WIDTH(16)) sample_reg1 (
+wire signed [15:0] flopped_echoed_sample;
+wire flopped_echoed_ready;
+
+    dff #(.WIDTH(17)) sample_reg_dff(
         .clk(clk_100),
-        .d(wave1_out),
-        .q(flopped_wave1)
+        .d({post_echoed_ready, post_echoed_sample}),
+        .q({flopped_echoed_ready, flopped_echoed_sample})
     );
-    dff #(.WIDTH(16)) sample_reg2 (
-        .clk(clk_100),
-        .d(wave2_out),
-        .q(flopped_wave2)
-    );
-    dff #(.WIDTH(16)) sample_reg3 (
-        .clk(clk_100),
-        .d(wave3_out),
-        .q(flopped_wave3)
-    );
+	 
 
 //   
 //  ****************************************************************************
@@ -281,7 +308,7 @@ dff #(.WIDTH(16)) sample_top_ff_ready(
 	wire [23:0] line_in_r =  0; 
 	
     // Output the sample onto the LEDs for the fun of it.
-     assign leds_r = echoed_sample[15:12];
+     assign leds_r = flopped_echoed_sample[15:12];
 	  //assign leds_r = codec_sample[15:12];
 
     //assign leds_r = Decode;
@@ -320,8 +347,8 @@ dff #(.WIDTH(16)) sample_top_ff_ready(
 	  .AC_MCLK(AC_MCLK),
 	  .AC_SCK(AC_SCK),
 	  .AC_SDA(AC_SDA),
-	  .hphone_l(sw[0] ? {echoed_sample, 8'h00} : hphone_l),
-	  .hphone_r(sw[1] ? {echoed_sample, 8'h00} : hphone_r),
+	  .hphone_l(sw[0] ? {flopped_echoed_sample, 8'h00} : hphone_l),
+	  .hphone_r(sw[1] ? {flopped_echoed_sample, 8'h00} : hphone_r),
 	  .line_in_l(line_in_l),
 	  .line_in_r(line_in_r),
 	  .new_sample(new_frame)
@@ -369,28 +396,13 @@ dff #(.WIDTH(16)) sample_top_ff_ready(
            .valid(valid),
           .hdmi_sda (HDMI_SDA));
     
-	 // dff #(.WIDTH (12)) x_dff (
-  //       .clk (clk_100),
-  //       .d (x),
-  //       .q (x_q)
-		//   );
- 
-	 // dff #(.WIDTH (12)) y_dff (
-  //       .clk (clk_100),
-  //       .d (y),
-  //       .q (y_q)
-		//   );
 
-  //    dff valid_dff(
-  //       .clk(clk_100),
-  //       .d(valid_d),
-  //       .q(valid));
 	wire [7:0] r_all, g_all, b_all, r_sub1, g_sub2, b_sub3;	  
     wave_display_top wd_top (
 		.clk (clk_100),
 		.reset (reset),
-		.new_sample (echoed_ready), //Need to set this to generalized output sample later on
-		.sample (flopped_sample),
+		.new_sample (flopped_echoed_ready),  
+		.sample (flopped_echoed_sample),
 		// .x(x_q[10:0]),
 		// .y(y_q[9:0]),
         .x(x[10:0]),
@@ -405,7 +417,7 @@ dff #(.WIDTH(16)) sample_top_ff_ready(
 	  wave_display_top wd_top1 (
 		.clk (clk_100),
 		.reset (reset),
-		.new_sample (echoed_ready),
+		.new_sample (new_sample),
 		.sample (flopped_wave1),
 		// .x(x_q[10:0]),
 		// .y(y_q[9:0]),
@@ -421,7 +433,7 @@ dff #(.WIDTH(16)) sample_top_ff_ready(
 	  wave_display_top wd_top2 (
 		.clk (clk_100),
 		.reset (reset),
-		.new_sample (echoed_ready),
+		.new_sample (new_sample),
 		.sample (flopped_wave2),
 		// .x(x_q[10:0]),
 		// .y(y_q[9:0]),
@@ -437,7 +449,7 @@ dff #(.WIDTH(16)) sample_top_ff_ready(
 	 wave_display_top wd_top3 (
 		.clk (clk_100),
 		.reset (reset),
-		.new_sample (echoed_ready),
+		.new_sample (new_sample),
 		.sample (flopped_wave3),
 		// .x(x_q[10:0]),
 		// .y(y_q[9:0]),
@@ -457,3 +469,21 @@ dff #(.WIDTH(16)) sample_top_ff_ready(
 
 endmodule
 
+
+
+	 // dff #(.WIDTH (12)) x_dff (
+  //       .clk (clk_100),
+  //       .d (x),
+  //       .q (x_q)
+		//   );
+ 
+	 // dff #(.WIDTH (12)) y_dff (
+  //       .clk (clk_100),
+  //       .d (y),
+  //       .q (y_q)
+		//   );
+
+  //    dff valid_dff(
+  //       .clk(clk_100),
+  //       .d(valid_d),
+  //       .q(valid));
