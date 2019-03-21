@@ -1,6 +1,8 @@
 `define HIGH 1'b1
 `define LOW 1'b0
 `define WHITE 8'hFF
+`define GREY 8'h7F
+`define EVEN_GREY 8'hC0
 `define NOTWHITE 8'h0
 
 module wave_display (
@@ -49,12 +51,13 @@ dffr #(.WIDTH(9)) read_addr_ff(
 	.d(read_address),
 	.q(prev_read_address)
 );   
+ 
 
 wire [7:0] short_y;
 
 assign short_y = y[8:1];
 
-reg colored_white, valid_region;
+reg colored_white, valid_region, colored_grey, colored_even_grey;
 /*-------------------------------------------------
 Checks if Y falls between RAM[X-1] and RAM,
 and checks for the valid region of the screen.
@@ -62,12 +65,16 @@ and checks for the valid region of the screen.
 always @(*) begin
 	if (read_value >= prev_read_value) begin
 		colored_white = ((short_y >= prev_read_value) & (short_y <= read_value)) ? `HIGH : `LOW;
+		colored_grey =  (((short_y >= prev_read_value - ((read_value - prev_read_value)>>1)) & (short_y <= prev_read_value)) | ((short_y >= read_value) & (short_y <= read_value + ((read_value - prev_read_value )>>1)))) ? `HIGH: `LOW;
+		colored_even_grey =  (((short_y >= prev_read_value - ((read_value - prev_read_value)>>2)) & (short_y <= prev_read_value)) | ((short_y >= read_value) & (short_y <= read_value + ((read_value - prev_read_value )>>2)))) ? `HIGH: `LOW;
 	end else begin
 		colored_white = ((short_y <= prev_read_value) & (short_y >= read_value)) ? `HIGH : `LOW;
+		colored_grey =  ((short_y >= prev_read_value & short_y <= (prev_read_value + ((prev_read_value - read_value)>>1))) | (short_y >= (read_value - ((prev_read_value - read_value)>>1))  & short_y <= read_value)) ? `HIGH : `LOW;
+		colored_even_grey =  ((short_y >= prev_read_value & short_y <= (prev_read_value + ((prev_read_value - read_value)>>1))) | (short_y >= (read_value - ((prev_read_value - read_value)>>2))  & short_y <= read_value)) ? `HIGH : `LOW;
+
 	end
 	
-	 if (~valid || y[9] || x[9:8] == 2'b00 || x[9:8] >= 2'b11 || x < 11'b00100001100) begin
-	//if (~valid || x[9:8] == 2'b00 || x[9:8] >= 2'b11 || x < 11'b00100001100) begin
+	if (~valid || y[9] || x[9:8] == 2'b00 || x[9:8] >= 2'b11 || x < 11'b00100001100) begin
 	//  x < 11'b100001100: as per private piazza post that says remove out the few pixels on the left of quadrant 01
 		valid_region = `LOW;
 	end else begin
@@ -75,9 +82,11 @@ always @(*) begin
 	end
 end
 
+//(colored_white? `WHITE:  `GREY )
 wire colored_white_wire = colored_white;
-assign valid_pixel = colored_white & valid_region;
-assign r = valid_pixel? `WHITE : `NOTWHITE;
-assign g = valid_pixel? `WHITE : `NOTWHITE;
-assign b = valid_pixel? `WHITE : `NOTWHITE;
+assign valid_pixel = (colored_grey | colored_even_grey | colored_white) & valid_region;
+//assign valid_pixel = (colored_white) & valid_region;
+assign r = valid_pixel?  (colored_white? `WHITE: (colored_even_grey? `EVEN_GREY : `GREY )) : `NOTWHITE;
+assign g = valid_pixel?  (colored_white? `WHITE: (colored_even_grey? `EVEN_GREY : `GREY )) : `NOTWHITE;
+assign b = valid_pixel?(colored_white? `WHITE: (colored_even_grey? `EVEN_GREY : `GREY )) : `NOTWHITE;
 endmodule
