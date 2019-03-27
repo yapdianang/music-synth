@@ -1,4 +1,5 @@
 `timescale 1ns/1ps
+
 module harmonics_tb();
 
     reg clk, reset, play_enable, generate_next_sample;
